@@ -10,9 +10,9 @@ enum class UserType(val type:String){
 
 data class User(
     val userId:String,
-    val firstName:String,
-    val lastName:String,
-    val userName:String,
-    val type:UserType,
+    var firstName:String,
+    var lastName:String,
+    var userName:String,
+    var type:UserType,
     val timeCreated:LocalDateTime
 )
