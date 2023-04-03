@@ -3,7 +3,7 @@ package com.components.chatRoom.models
 import java.time.LocalDateTime
 
 data class ChatRoom(
-    val id:String,
+    val _id:String,
     var userIds:List<String>,
     val chatInitiator:String,
     var roomName:String,

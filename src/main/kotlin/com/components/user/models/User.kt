@@ -9,7 +9,7 @@ enum class UserType(val type:String){
 }
 
 data class User(
-    val userId:String,
+    val _id:String,
     var firstName:String,
     var lastName:String,
     var userName:String,
