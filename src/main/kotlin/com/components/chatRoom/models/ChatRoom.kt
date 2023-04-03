@@ -4,8 +4,8 @@ import java.time.LocalDateTime
 
 data class ChatRoom(
     val id:String,
-    val userIds:List<String>,
+    var userIds:List<String>,
     val chatInitiator:String,
-    val roomName:String,
+    var roomName:String,
     val dateCreated:LocalDateTime
 )
