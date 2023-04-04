@@ -37,4 +37,8 @@ interface ChatRoomController {
      * function to delete user/s from chat room
      * **/
     fun deleteUsersFromChatRoom(chatRoomId:String,usersId: List<String>):APIResponse<Int>
+    /**
+     * function to get members of a chat room
+     * **/
+    fun getMembersOfChatRoom(chatRoomId:String):APIResponse<List<String>>
 }

@@ -60,4 +60,11 @@ class ChatRoomControllerImpl : ChatRoomController {
     override fun deleteUsersFromChatRoom(chatRoomId: String, usersId: List<String>): APIResponse<Int> {
         TODO("Not yet implemented")
     }
+
+    /**
+     * function to get members of a chat room
+     * **/
+    override fun getMembersOfChatRoom(chatRoomId: String): APIResponse<List<String>> {
+        TODO("Not yet implemented")
+    }
 }
