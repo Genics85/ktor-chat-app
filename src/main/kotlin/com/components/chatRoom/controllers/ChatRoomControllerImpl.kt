@@ -3,8 +3,10 @@ package com.components.chatRoom.controllers
 import com.components.chatRoom.models.ChatRoom
 import com.components.message.models.RoomMessage
 import com.config.APIResponse
+import org.kodein.di.DI
+import org.kodein.di.DIAware
 
-class ChatRoomControllerImpl : ChatRoomController {
+class ChatRoomControllerImpl(override val di: DI) : ChatRoomController,DIAware {
     /**
      * function to create a chat room
      * **/

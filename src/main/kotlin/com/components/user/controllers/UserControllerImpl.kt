@@ -2,8 +2,10 @@ package com.components.user.controllers
 
 import com.components.user.models.User
 import com.config.APIResponse
+import org.kodein.di.DI
+import org.kodein.di.DIAware
 
-class UserControllerImpl : UserController {
+class UserControllerImpl( override val di: DI) : UserController, DIAware {
     /**
      * function to create user
      * **/

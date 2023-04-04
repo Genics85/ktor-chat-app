@@ -2,8 +2,10 @@ package com.components.message.controllers
 
 import com.components.message.models.DirectMessage
 import com.config.APIResponse
+import org.kodein.di.DI
+import org.kodein.di.DIAware
 
-class DirectMessageControlllerImpl : DirectMessageControlller {
+class DirectMessageControllerImpl(override val di: DI) : DirectMessageControlller, DIAware {
     /**
      * function to get a single message with id
      * **/

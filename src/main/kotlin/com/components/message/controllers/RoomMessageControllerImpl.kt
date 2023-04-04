@@ -2,8 +2,10 @@ package com.components.message.controllers
 
 import com.components.message.models.RoomMessage
 import com.config.APIResponse
+import org.kodein.di.DI
+import org.kodein.di.DIAware
 
-class RoomMessageControllerImpl : RoomMessageController {
+class RoomMessageControllerImpl(override val di: DI) : RoomMessageController, DIAware {
     /**
      * function to get all chat room messages
      * **/
