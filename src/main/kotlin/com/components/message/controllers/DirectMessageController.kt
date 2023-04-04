@@ -3,7 +3,7 @@ package com.components.message.controllers
 import com.components.message.models.DirectMessage
 import com.config.APIResponse
 
-interface DirectMessageControlller {
+interface DirectMessageController {
     /**
      * function to get a single message with id
      * **/

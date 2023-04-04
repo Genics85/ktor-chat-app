@@ -5,7 +5,7 @@ import com.config.APIResponse
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 
-class DirectMessageControllerImpl(override val di: DI) : DirectMessageControlller, DIAware {
+class DirectMessageControllerImpl(override val di: DI) : DirectMessageController, DIAware {
     /**
      * function to get a single message with id
      * **/

@@ -1,5 +1,7 @@
 package com
 
+import com.config.DatabaseFactory
+import com.config.configureDI
 import com.config.plugins.configureRouting
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -11,5 +13,7 @@ fun main() {
 }
 
 fun Application.module() {
+    configureDI()
+    DatabaseFactory.connect()
     configureRouting()
 }
