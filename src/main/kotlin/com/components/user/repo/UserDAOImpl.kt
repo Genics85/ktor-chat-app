@@ -34,7 +34,7 @@ class UserDAOImpl : UserDAO {
     /**
      * update user information
      * **/
-    override fun updateUserInfo(firstname: String?, lastName: String?, userName: String?): Int {
+    override fun updateUserInfo(userId: String, firstname: String?, lastName: String?, userName: String?): Int {
         TODO("Not yet implemented")
     }
 }

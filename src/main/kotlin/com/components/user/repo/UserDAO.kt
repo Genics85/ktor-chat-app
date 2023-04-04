@@ -18,9 +18,9 @@ interface UserDAO {
     /**
      * function to get all users
      **/
-    fun getAllUsers():List<User>
+    fun getAllUsers():List<User?>
     /**
      * update user information
      * **/
-    fun updateUserInfo(firstname:String?,lastName:String?,userName:String?):Int
+    fun updateUserInfo( userId:String,firstname:String?,lastName:String?,userName:String?):Int
 }
