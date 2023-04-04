@@ -4,6 +4,6 @@ data class DirectMessage(
     val _id:String,
     val senderId:String,
     val recipientId:String,
-    val content:Any,
+    val content:String,
     val timeSent:String,
 )
