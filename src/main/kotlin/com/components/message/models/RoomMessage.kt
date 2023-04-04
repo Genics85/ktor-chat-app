@@ -1,7 +1,7 @@
 package com.components.message.models
 
 data class RoomMessage(
-    val _id:String,
+    val id:String,
     val senderId:String,
     val roomId:String,
     val content:String,
