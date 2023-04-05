@@ -27,7 +27,7 @@ class RoomMessageDAOImpl : RoomMessageDAO {
     /**
      * function to get all room messages
      * **/
-    override fun getRoomMessages(): List<RoomMessage?> {
+    override fun getAllRoomMessages(): List<RoomMessage?> {
         TODO("Not yet implemented")
     }
 }

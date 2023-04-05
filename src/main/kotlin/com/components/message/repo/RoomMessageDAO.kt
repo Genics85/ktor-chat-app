@@ -18,5 +18,5 @@ interface RoomMessageDAO {
     /**
      * function to get all room messages
      * **/
-    fun getRoomMessages():List<RoomMessage?>
+    fun getAllRoomMessages():List<RoomMessage?>
 }

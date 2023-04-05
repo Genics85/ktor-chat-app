@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.TestInstance
 import uk.co.jemos.podam.api.PodamFactoryImpl
 
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class DirectMessageDAOImplTest {
     private lateinit var underTest:DirectMessageDAOImpl
     private lateinit var messages:List<DirectMessage>
