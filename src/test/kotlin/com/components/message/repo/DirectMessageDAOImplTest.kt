@@ -57,6 +57,16 @@ internal class DirectMessageDAOImplTest {
     }
 
     @Test
+    fun `can not delete because message id does not exist`(){
+        //GIVEN
+        val message = factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        //WHEN
+        val expected=underTest.deleteDirectMessage(message.id)
+        //THEN
+        assertThat(expected).isFalse
+    }
+
+    @Test
     fun getDirectMessagesForRecipient() {
         //GIVEN
         val message = messages.first()
@@ -68,6 +78,17 @@ internal class DirectMessageDAOImplTest {
     }
 
     @Test
+    fun `can not get direct message because there is no message for recipient`(){
+        //GIVEN
+        val message = factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        //WHEN
+        val expected=underTest.getDirectMessagesForRecipient(message.recipientId)
+        //THEN
+        assertThat(expected.size).isEqualTo(0)
+    }
+
+
+    @Test
     fun getDirectMessageFromSender() {
         //GIVEN
         val message = messages.first()
@@ -76,6 +97,16 @@ internal class DirectMessageDAOImplTest {
         //THEN
         assertThat(expected.first()).isInstanceOf(DirectMessage::class.java)
         assertThat(expected.size).isGreaterThan(0)
+    }
+
+    @Test
+    fun `can not get direct message because there is no message from sender`(){
+        //GIVEN
+        val message = factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        //WHEN
+        val expected=underTest.getDirectMessagesForRecipient(message.senderId)
+        //THEN
+        assertThat(expected.size).isEqualTo(0)
     }
 
     @Test
