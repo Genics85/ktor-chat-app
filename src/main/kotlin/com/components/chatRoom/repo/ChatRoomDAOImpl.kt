@@ -6,14 +6,14 @@ class ChatRoomDAOImpl : ChatRoomDAO {
     /**
      * function to get chat room details
      * **/
-    override fun getChatRoom(id: String): ChatRoom {
+    override fun getChatRoom(id: String): ChatRoom? {
         TODO("Not yet implemented")
     }
 
     /**
      * function to create new chatroom
      * **/
-    override fun createChatRoom(room: ChatRoom): String {
+    override fun createChatRoom(room: ChatRoom): ChatRoom? {
         TODO("Not yet implemented")
     }
 
@@ -27,21 +27,21 @@ class ChatRoomDAOImpl : ChatRoomDAO {
     /**
      * Remove user from chat room
      * **/
-    override fun deleteUserFromChatRoom(id: String): Boolean {
+    override fun deleteUserFromChatRoom(roomId: String, userId: String): Boolean {
         TODO("Not yet implemented")
     }
 
     /**
      * Add user to the chat room
      * **/
-    override fun addUserToChatRoom(id: String): Boolean {
+    override fun addUserToChatRoom(roomId: String, userId: String): Boolean {
         TODO("Not yet implemented")
     }
 
     /**
      * Function to change the name of a chat room
      * **/
-    override fun changeChatRoomName(id: String, newName: String): Int {
+    override fun changeChatRoomName(roomId: String, newName: String): Boolean {
         TODO("Not yet implemented")
     }
 }

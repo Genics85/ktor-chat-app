@@ -77,6 +77,7 @@ internal class RoomMessageDAOImplTest {
         val expected = underTest.getMessagesForRoom(message.roomId)
         //THEN
         assertThat(expected.size).isGreaterThan(0)
+        assertThat(expected.first()).isInstanceOf(RoomMessage::class.java)
     }
 
     @Test
@@ -96,5 +97,6 @@ internal class RoomMessageDAOImplTest {
         val expected = underTest.getAllRoomMessages()
         //THEN
         assertThat(expected.size).isGreaterThan(0)
+        assertThat(expected.first()).isInstanceOf(RoomMessage::class.java)
     }
 }

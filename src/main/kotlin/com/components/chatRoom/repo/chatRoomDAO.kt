@@ -6,26 +6,26 @@ interface ChatRoomDAO {
     /**
      * function to get chat room details
      * **/
-    fun getChatRoom(id:String):ChatRoom
+    fun getChatRoom(roomId:String):ChatRoom?
     /**
      * function to create new chatroom
      * **/
-    fun createChatRoom(room: ChatRoom):String
+    fun createChatRoom(room: ChatRoom):ChatRoom?
     /**
      * function to delete chat room from database
      * **/
-    fun deleteChatRoom(id:String):Boolean
+    fun deleteChatRoom(roomId:String):Boolean
     /**
      * Remove user from chat room
      * **/
-    fun deleteUserFromChatRoom(id:String):Boolean
+    fun deleteUserFromChatRoom(roomId:String,userId:String):Boolean
     /**
      * Add user to the chat room
      * **/
-    fun addUserToChatRoom(id:String):Boolean
+    fun addUserToChatRoom(roomId:String,userId:String):Boolean
     /**
      * Function to change the name of a chat room
      * **/
-    fun changeChatRoomName(id:String,newName:String):Int
+    fun changeChatRoomName(roomId:String,newName:String):Boolean
 
 }
