@@ -1,0 +1,90 @@
+package com.components.message.repo
+
+import com.components.message.models.DirectMessage
+import com.config.DatabaseFactory
+import org.assertj.core.api.AssertionsForClassTypes.assertThat
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Test
+
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeAll
+import uk.co.jemos.podam.api.PodamFactoryImpl
+
+
+internal class DirectMessageDAOImplTest {
+    private lateinit var underTest:DirectMessageDAOImpl
+    private lateinit var messages:List<DirectMessage>
+    private var factory:PodamFactoryImpl = PodamFactoryImpl()
+
+    @BeforeAll
+    fun setup(){
+        DatabaseFactory.connect()
+        underTest= DirectMessageDAOImpl()
+        messages = factory.manufacturePojoWithFullData(List::class.java,DirectMessage::class.java) as List<DirectMessage>
+        messages.forEach{
+            underTest.createDirectMessage(it)
+        }
+    }
+
+    @AfterAll
+    fun tearDown(){
+        transaction{
+            SchemaUtils.drop(com.database.DirectMessage)
+        }
+    }
+
+    @Test
+    fun createDirectMessage() {
+        //GIVEN
+        val message = factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        //WHEN
+        val expected=underTest.createDirectMessage(message)
+        //THEN
+        assertThat(expected).isInstanceOf(DirectMessage::class.java)
+        assertThat(expected).isNotNull
+    }
+
+    @Test
+    fun deleteDirectMessage() {
+        //GIVEN
+        val message = messages.first()
+        //WHEN
+        val expected=underTest.deleteDirectMessage(message.id)
+        //THEN
+        assertThat(expected).isTrue
+    }
+
+    @Test
+    fun getDirectMessagesForRecipient() {
+        //GIVEN
+        val message = messages.first()
+        //WHEN
+        val expected = underTest.getDirectMessagesForRecipient(message.recipientId)
+        //THEN
+        assertThat(expected.first()).isInstanceOf(DirectMessage::class.java)
+        assertThat(expected.size).isGreaterThan(0)
+    }
+
+    @Test
+    fun getDirectMessageFromSender() {
+        //GIVEN
+        val message = messages.first()
+        //WHEN
+        val expected = underTest.getDirectMessageFromSender(message.senderId)
+        //THEN
+        assertThat(expected.first()).isInstanceOf(DirectMessage::class.java)
+        assertThat(expected.size).isGreaterThan(0)
+    }
+
+    @Test
+    fun getAllDirectMessages() {
+        //GIVEN
+        //WHEN
+        val expected = underTest.getAllDirectMessages()
+        //THEN
+        assertThat(expected.size).isGreaterThan(0)
+        assertThat(expected.first()).isInstanceOf(DirectMessage::class.java)
+    }
+}
