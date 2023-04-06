@@ -78,7 +78,6 @@ internal class ChatRoomControllerImplTest {
         //THEN
         assertThat(expected.code).isEqualTo("200")
         assertThat(expected.data.size).isEqualTo(0)
-
     }
 
     @Test
@@ -94,12 +93,24 @@ internal class ChatRoomControllerImplTest {
     }
 
     @Test
-    fun `can not get chat room because of error`(){
+    fun `can not get chat room because of sql exception error`(){
         //GIVEN
         val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
         every { roomService.getChatRoom(any()) } throws SQLException()
         //WHEN
         val expected = underTest.getChatRoom(room.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
+        assertThat(expected.data.size).isEqualTo(0)
+    }
+
+    @Test
+    fun `can not get chat because it does not exist`(){
+        //GIVEN
+        val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every{roomService.getChatRoom(any())} returns null
+        //WHEN
+        val expected=underTest.getChatRoom(room.id)
         //THEN
         assertThat(expected.code).isEqualTo("200")
         assertThat(expected.data.size).isEqualTo(0)
@@ -114,6 +125,28 @@ internal class ChatRoomControllerImplTest {
         val expected = underTest.deleteChatRoom(room.id)
         //THEN
         assertThat(expected.code).isEqualTo("201")
+    }
+
+    @Test
+    fun `can not delete room because id does not exist`(){
+        //GIVEN
+        val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every { roomService.deleteChatRoom((any())) } returns false
+        //WHEN
+        val expected = underTest.deleteChatRoom(room.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("200")
+    }
+
+    @Test
+    fun `can not delete because of SQL Exception`(){
+        //GIVEN
+        val room = factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every { roomService.deleteChatRoom(any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.deleteChatRoom(room.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
     }
 
     @Test
