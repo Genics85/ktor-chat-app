@@ -6,15 +6,15 @@ interface RoomMessageDAO {
     /***
      * function to create a room message
      * */
-    fun createRoomMessage(message:RoomMessage):RoomMessage
+    fun createRoomMessage(message:RoomMessage):RoomMessage?
     /**
      * function to delete room message
      * **/
-    fun deleteRoomMessage(id:String):Boolean
+    fun deleteRoomMessage(roomId:String,id:String):Boolean
     /**
      * function to get all messages for a particular room
      * **/
-    fun getMessagesForRoom(roomId:String):List<RoomMessage?>
+    fun getRoomMessages(roomId:String):List<RoomMessage?>
     /**
      * function to get all room messages
      * **/

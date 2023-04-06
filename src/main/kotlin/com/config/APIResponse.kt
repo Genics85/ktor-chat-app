@@ -4,5 +4,5 @@ data class APIResponse<T>(
     val code:String,
     val systemCode:String,
     val message:String,
-    val list: List<T>
+    val data: List<T>
 )

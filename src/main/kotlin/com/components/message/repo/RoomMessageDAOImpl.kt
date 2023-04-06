@@ -13,14 +13,14 @@ class RoomMessageDAOImpl : RoomMessageDAO {
     /**
      * function to delete room message
      * **/
-    override fun deleteRoomMessage(id: String): Boolean {
+    override fun deleteRoomMessage(roomId: String, id: String): Boolean {
         TODO("Not yet implemented")
     }
 
     /**
      * function to get all messages for a particular room
      * **/
-    override fun getMessagesForRoom(roomId: String): List<RoomMessage?> {
+    override fun getRoomMessages(roomId: String): List<RoomMessage?> {
         TODO("Not yet implemented")
     }
 

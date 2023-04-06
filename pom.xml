@@ -80,10 +80,12 @@
             <version>${kodein.version}</version>
         </dependency>
         <!--  Mockk for mocking dependencies for dependency injection in unit testing-->
+
         <dependency>
             <groupId>io.mockk</groupId>
             <artifactId>mockk</artifactId>
-            <version>1.13.4</version>
+            <version>1.12.0</version>
+            <scope>test</scope>
         </dependency>
         <!--  Podam for generating random data for unit testing-->
         <dependency>
@@ -110,6 +112,12 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.32</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-compiler</artifactId>
+            <version>1.8.20</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
