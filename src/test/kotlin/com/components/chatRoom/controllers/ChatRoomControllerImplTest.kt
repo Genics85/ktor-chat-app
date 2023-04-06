@@ -16,6 +16,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
+import java.sql.SQLException
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class ChatRoomControllerImplTest {
@@ -25,7 +26,6 @@ internal class ChatRoomControllerImplTest {
     private lateinit var messageService:RoomMessageDAO
     private lateinit var di:DI
     private var factory:PodamFactoryImpl= PodamFactoryImpl()
-
 
 
     @BeforeAll
@@ -57,6 +57,31 @@ internal class ChatRoomControllerImplTest {
     }
 
     @Test
+    fun `create chat room not successful for sql exception`(){
+        //GIVEN
+        val room = factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every{roomService.createChatRoom(any())} throws SQLException()
+        //WHEN
+        val expected = underTest.createChatRoom(room)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
+        assertThat(expected.data.size).isEqualTo(0)
+    }
+
+    @Test
+    fun `can not create chat room`(){
+        //GIVEN
+        val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every { roomService.createChatRoom(any()) } returns null
+        //WHEN
+        val expected=underTest.createChatRoom(room)
+        //THEN
+        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.data.size).isEqualTo(0)
+
+    }
+
+    @Test
     fun getChatRoom() {
         //GIVEN
         val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
@@ -66,6 +91,18 @@ internal class ChatRoomControllerImplTest {
         //THEN
         assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isEqualTo(1)
+    }
+
+    @Test
+    fun `can not get chat room because of error`(){
+        //GIVEN
+        val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every { roomService.getChatRoom(any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.getChatRoom(room.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.data.size).isEqualTo(0)
     }
 
     @Test
@@ -94,22 +131,49 @@ internal class ChatRoomControllerImplTest {
 
     @Test
     fun changeChatRoomName() {
-
+        //GIVEN
+        val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every{roomService.changeChatRoomName(any(),any())} returns true
+        //WHEN
+        val expected = underTest.changeChatRoomName(room.id,"something new")
+        //THEN
+        assertThat(expected.code).isEqualTo("201")
     }
 
     @Test
     fun addUserToChatRoom() {
+        //GIVEN
+        val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every{roomService.addUserToChatRoom(any(),any())} returns true
+        //WHEN
+        val expected = underTest.addUserToChatRoom(room.id, listOf("sdkfjlskjflskd"))
+        //THEN
+        assertThat(expected.code).isEqualTo("201")
     }
 
     @Test
     fun deleteUsersFromChatRoom() {
+        //GIVEN
+        val room = factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every { roomService.deleteChatRoom(any()) } returns true
+        //WHEN
+        val expected = underTest.deleteChatRoom(room.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("201")
     }
 
     @Test
     fun getMembersOfChatRoom() {
+        //GIVEN
+        val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every { roomService.getChatRoom(any()) } returns room
+        //WHEN
+        val expected = underTest.getMembersOfChatRoom(room.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.data.size).isGreaterThan(0)
+
     }
 
-    @Test
-    fun getDi() {
-    }
+
 }
