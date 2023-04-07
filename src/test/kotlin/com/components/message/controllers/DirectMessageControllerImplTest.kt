@@ -2,7 +2,6 @@ package com.components.message.controllers
 
 import com.components.message.models.DirectMessage
 import com.components.message.repo.DirectMessageDAO
-import com.components.message.repo.DirectMessageDAOImpl
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -11,6 +10,7 @@ import org.junit.jupiter.api.*
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import uk.co.jemos.podam.api.PodamFactoryImpl
+import java.sql.SQLException
 
 internal class DirectMessageControllerImplTest {
 
@@ -41,8 +41,32 @@ internal class DirectMessageControllerImplTest {
         //WHEN
         val expected = underTest.getDirectMessage(messages.first().id)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
         assertThat(expected.data.size).isOne
+    }
+
+    @Test
+    fun `Didn't get any direct message because direct message is not found`(){
+        //GIVEN
+        val messages=factory.manufacturePojoWithFullData(List::class.java,DirectMessage::class.java) as List<DirectMessage>
+        every{service.getAllDirectMessages()} returns messages
+        //WHEN
+        val expected =underTest.getDirectMessage("loremipsumtext")
+        //THEN
+        assertThat(expected.code).isEqualTo("204")
+        assertThat(expected.data.size).isZero
+    }
+
+    @Test
+    fun `Didn't get any direct message because of SE error`(){
+        //GIVEN
+        val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        every { service.getAllDirectMessages() } throws SQLException()
+        //WHEN
+        val expected = underTest.getDirectMessage(message.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
+        assertThat(expected.data.size).isZero
     }
 
     @Test
@@ -53,8 +77,19 @@ internal class DirectMessageControllerImplTest {
         //WHEN
         val expected = underTest.getDirectMessagesForRecipient(messages.first().recipientId)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
         assertThat(expected.data.size).isGreaterThan(0)
+    }
+
+    @Test
+    fun `There is no message for recipient`(){
+        //GIVEN
+        val message = factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        every { service.getDirectMessagesForRecipient(any()) } returns listOf()
+        //WHEN
+        val expected = underTest.getDirectMessagesForRecipient(message.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("204")
     }
 
     @Test
@@ -65,7 +100,7 @@ internal class DirectMessageControllerImplTest {
         //WHEN
         val expected = underTest.getDirectMessagesFromSender(messages.first().senderId)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
         assertThat(expected.data.size).isGreaterThan(0)
     }
 
@@ -77,7 +112,7 @@ internal class DirectMessageControllerImplTest {
         //WHEN
         val expected = underTest.createDirectMessage(message)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
         assertThat(expected.data.size).isOne
     }
 
@@ -100,8 +135,19 @@ internal class DirectMessageControllerImplTest {
         //WHEN
         val expected =underTest.getAllDirectMessages()
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
         assertThat(expected.data.size).isGreaterThan(0)
+    }
 
+    @Test
+    fun `can not get any direct message because some does not exist in the db`(){
+        //GIVEN
+        val messages=factory.manufacturePojoWithFullData(List::class.java,DirectMessage::class.java)
+        every{service.getAllDirectMessages()} listOf()
+        //WHEN
+        val expected = underTest.getAllDirectMessages()
+        //THEN
+        assertThat(expected.code).isEqualTo("204")
+        assertThat(expected.data.size).isZero
     }
 }
