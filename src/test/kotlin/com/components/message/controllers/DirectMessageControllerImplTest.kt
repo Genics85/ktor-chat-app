@@ -147,8 +147,20 @@ internal class DirectMessageControllerImplTest {
         //WHEN
         val expected = underTest.createDirectMessage(message)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isOne
+    }
+
+    @Test
+    fun `failed to create direct message`(){
+        //GIVEN
+        val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        every { service.createDirectMessage(any()) } returns null
+        //WHEN
+        val expected=underTest.createDirectMessage(message)
+        //THEN
+        assertThat(expected.code).isEqualTo("204")
+        assertThat(expected.data.size).isZero
     }
 
     @Test
@@ -159,7 +171,7 @@ internal class DirectMessageControllerImplTest {
         //WHEN
         val expected = underTest.createDirectMessage(message)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("500")
         assertThat(expected.data.size).isZero
     }
 
@@ -171,7 +183,7 @@ internal class DirectMessageControllerImplTest {
         //WHEN
         val expected = underTest.deleteDirectMessage(message.id)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
     }
 
     @Test
@@ -182,7 +194,7 @@ internal class DirectMessageControllerImplTest {
         //WHEN
         val expected = underTest.deleteDirectMessage(message.id)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
     }
 
     @Test

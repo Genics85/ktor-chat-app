@@ -69,7 +69,7 @@ internal class ChatRoomControllerImplTest {
     }
 
     @Test
-    fun `can not create chat room`(){
+    fun ` failed to create chat room`(){
         //GIVEN
         val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
         every { roomService.createChatRoom(any()) } returns null
@@ -88,7 +88,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.getChatRoom(room.id)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
         assertThat(expected.data.size).isEqualTo(1)
     }
 
@@ -112,7 +112,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected=underTest.getChatRoom(room.id)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("204")
         assertThat(expected.data.size).isEqualTo(0)
     }
 
@@ -124,7 +124,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.deleteChatRoom(room.id)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
     }
 
     @Test
@@ -170,7 +170,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.getChatRoomMessages(room.id)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("204")
         assertThat(expected.data.size).isEqualTo(0)
     }
 
@@ -195,7 +195,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.changeChatRoomName(room.id,"something new")
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
     }
 
     @Test
@@ -206,7 +206,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected =underTest.changeChatRoomName(room.id,"something not new")
         //THEN
-        assertThat(expected.code).isEqualTo("500")
+        assertThat(expected.code).isEqualTo("200")
     }
 
     @Test
@@ -217,7 +217,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.addUserToChatRoom(room.id, listOf("sdkfjlskjflskd"))
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
     }
 
     @Test
@@ -250,7 +250,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.deleteChatRoom(room.id)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
     }
 
     @Test
@@ -283,7 +283,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.getMembersOfChatRoom(room.id)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
+        assertThat(expected.code).isEqualTo("200")
         assertThat(expected.data.size).isGreaterThan(0)
     }
 
@@ -295,7 +295,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.getMembersOfChatRoom(room.id)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("204")
         assertThat(expected.data.size).isZero
     }
 
