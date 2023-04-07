@@ -93,6 +93,17 @@ internal class DirectMessageControllerImplTest {
     }
 
     @Test
+    fun `can not retrieve message for recipient because of SE error`(){
+        //GIVEN
+        val message = factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        every{service.getDirectMessagesForRecipient(any())} throws SQLException()
+        //WHEN
+        val expected = underTest.getDirectMessagesForRecipient(message.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
+    }
+
+    @Test
     fun getDirectMessagesFromSender() {
         //GIVEN
         val messages=factory.manufacturePojoWithFullData(List::class.java,DirectMessage::class.java) as List<DirectMessage>
@@ -102,6 +113,30 @@ internal class DirectMessageControllerImplTest {
         //THEN
         assertThat(expected.code).isEqualTo("200")
         assertThat(expected.data.size).isGreaterThan(0)
+    }
+
+    @Test
+    fun `no sender messages found in db`(){
+        //GIVEN
+        val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        every { service.getDirectMessageFromSender(any()) } returns listOf()
+        //WHEN
+        val expected = underTest.getDirectMessagesFromSender(message.senderId)
+        //THEN
+        assertThat(expected.code).isEqualTo("204")
+        assertThat(expected.data.size).isZero
+    }
+
+    @Test
+    fun ` cant retrieve message from sender for SE error`(){
+        //GIVEN
+        val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        every { service.getDirectMessageFromSender(any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.getDirectMessagesFromSender(message.senderId)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
+        assertThat(expected.data.size).isZero
     }
 
     @Test
@@ -117,6 +152,18 @@ internal class DirectMessageControllerImplTest {
     }
 
     @Test
+    fun `failed to create direct message because of SE error`(){
+        //GIVEN
+        val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        every { service.createDirectMessage(any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.createDirectMessage(message)
+        //THEN
+        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.data.size).isZero
+    }
+
+    @Test
     fun deleteDirectMessage() {
         //GIVEN
         val message = factory.manufacturePojoWithFullData(DirectMessage::class.java)
@@ -125,6 +172,28 @@ internal class DirectMessageControllerImplTest {
         val expected = underTest.deleteDirectMessage(message.id)
         //THEN
         assertThat(expected.code).isEqualTo("201")
+    }
+
+    @Test
+    fun `can not delete direct message because it does not exist`(){
+        //GIVEN
+        val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        every{service.deleteDirectMessage(any())} returns false
+        //WHEN
+        val expected = underTest.deleteDirectMessage(message.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("201")
+    }
+
+    @Test
+    fun `can not delete direst message because of SE error`(){
+        //GIVEN
+        val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        every{service.deleteDirectMessage(any())} throws SQLException()
+        //WHEN
+        val expected = underTest.deleteDirectMessage(message.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
     }
 
     @Test
@@ -142,12 +211,22 @@ internal class DirectMessageControllerImplTest {
     @Test
     fun `can not get any direct message because some does not exist in the db`(){
         //GIVEN
-        val messages=factory.manufacturePojoWithFullData(List::class.java,DirectMessage::class.java)
-        every{service.getAllDirectMessages()} listOf()
+        every{service.getAllDirectMessages()} returns listOf()
         //WHEN
         val expected = underTest.getAllDirectMessages()
         //THEN
         assertThat(expected.code).isEqualTo("204")
+        assertThat(expected.data.size).isZero
+    }
+
+    @Test
+    fun `can not get direct messages because SE error`(){
+        //GIVEN
+        every { service.getAllDirectMessages() } throws SQLException()
+        //WHEN
+        val expected = underTest.getAllDirectMessages()
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
         assertThat(expected.data.size).isZero
     }
 }
