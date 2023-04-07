@@ -9,7 +9,7 @@ class DirectMessageControllerImpl(override val di: DI) : DirectMessageController
     /**
      * function to get a single message with id
      * **/
-    override fun getDirectMessage(messageId: String): APIResponse<DirectMessage?> {
+    override fun getDirectMessage(messageId: String): APIResponse<DirectMessage> {
         TODO("Not yet implemented")
     }
 
@@ -17,14 +17,14 @@ class DirectMessageControllerImpl(override val di: DI) : DirectMessageController
      * function to get all direct messages for a particular recipient
      *
      **/
-    override fun getDirectMessagesForRecipient(recipientId: String): APIResponse<List<DirectMessage?>> {
+    override fun getDirectMessagesForRecipient(recipientId: String): APIResponse<List<DirectMessage>> {
         TODO("Not yet implemented")
     }
 
     /**
      * function to get all direct messages from a particular user
      * **/
-    override fun getDirectMessagesFromSender(senderId: String): APIResponse<List<DirectMessage?>> {
+    override fun getDirectMessagesFromSender(senderId: String): APIResponse<List<DirectMessage>> {
         TODO("Not yet implemented")
     }
 
@@ -45,7 +45,7 @@ class DirectMessageControllerImpl(override val di: DI) : DirectMessageController
     /**
      * get all direct messages
      * **/
-    override fun getAllDirectMessages(): APIResponse<List<DirectMessage?>> {
+    override fun getAllDirectMessages(): APIResponse<List<DirectMessage>> {
         TODO("Not yet implemented")
     }
 }
