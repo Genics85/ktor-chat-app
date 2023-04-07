@@ -7,16 +7,16 @@ interface DirectMessageController {
     /**
      * function to get a single message with id
      * **/
-    fun getDirectMessage(messageId:String):APIResponse<DirectMessage?>
+    fun getDirectMessage(messageId:String):APIResponse<DirectMessage>?
     /**
      * function to get all direct messages for a particular recipient
      *
     **/
-    fun getDirectMessagesForRecipient(recipientId:String):APIResponse<List<DirectMessage?>>
+    fun getDirectMessagesForRecipient(recipientId:String):APIResponse<List<DirectMessage>>
     /**
      * function to get all direct messages from a particular user
      * **/
-    fun getDirectMessagesFromSender(senderId:String):APIResponse<List<DirectMessage?>>
+    fun getDirectMessagesFromSender(senderId:String):APIResponse<List<DirectMessage>>
     /**
      * create direct message
      * **/
@@ -28,5 +28,5 @@ interface DirectMessageController {
     /**
      * get all direct messages
      * **/
-    fun getAllDirectMessages():APIResponse<List<DirectMessage?>>
+    fun getAllDirectMessages():APIResponse<List<DirectMessage>>
 }

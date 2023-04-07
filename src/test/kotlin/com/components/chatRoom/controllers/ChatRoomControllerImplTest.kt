@@ -163,6 +163,31 @@ internal class ChatRoomControllerImplTest {
     }
 
     @Test
+    fun `can not get chat room messages because room does not exist`(){
+        //GIVEN
+        val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every { messageService.getRoomMessages(any()) } returns emptyList()
+        //WHEN
+        val expected = underTest.getChatRoomMessages(room.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.data.size).isEqualTo(0)
+    }
+
+    @Test
+    fun `can not get chat room message because of SQL exception`(){
+        //GIVEN
+        val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every{messageService.getRoomMessages(any())} throws SQLException()
+        //WHEN
+        val expected = underTest.getChatRoomMessages(room.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
+        assertThat(expected.data.size).isEqualTo(0)
+    }
+
+
+    @Test
     fun changeChatRoomName() {
         //GIVEN
         val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
@@ -171,6 +196,17 @@ internal class ChatRoomControllerImplTest {
         val expected = underTest.changeChatRoomName(room.id,"something new")
         //THEN
         assertThat(expected.code).isEqualTo("201")
+    }
+
+    @Test
+    fun `can not change room name because room does not exist`(){
+        //GIVEN
+        val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every { roomService.changeChatRoomName(any(),any()) } returns false
+        //WHEN
+        val expected =underTest.changeChatRoomName(room.id,"something not new")
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
     }
 
     @Test
@@ -185,6 +221,28 @@ internal class ChatRoomControllerImplTest {
     }
 
     @Test
+    fun `can not add user to chat room`(){
+        //GIVEN
+        val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every{roomService.addUserToChatRoom(any(),any())} returns false
+        //WHEN
+        val expected = underTest.addUserToChatRoom(room.id, listOf("sdkfjskdjf"))
+        //THEN
+        assertThat(expected.code).isEqualTo("200")
+    }
+
+    @Test
+    fun `can not add user to chat room because of SQL exception`(){
+        //GIVEN
+        val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every{roomService.addUserToChatRoom(any(),any())} throws SQLException()
+        //WHEN
+        val expected = underTest.addUserToChatRoom(room.id, listOf("tyuiodfdddd"))
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
+    }
+
+    @Test
     fun deleteUsersFromChatRoom() {
         //GIVEN
         val room = factory.manufacturePojoWithFullData(ChatRoom::class.java)
@@ -193,6 +251,28 @@ internal class ChatRoomControllerImplTest {
         val expected = underTest.deleteChatRoom(room.id)
         //THEN
         assertThat(expected.code).isEqualTo("201")
+    }
+
+    @Test
+    fun `can not delete users from chat room because they are not part of the room`(){
+        //GIVEN
+        val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every { roomService.deleteChatRoom(any()) } returns false
+        //WHEN
+        val expected = underTest.deleteChatRoom(room.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("200")
+    }
+
+    @Test
+    fun `can not delete user from chatroom because of SE error`(){
+        //GIVEN
+        val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every { roomService.deleteChatRoom(any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.deleteChatRoom(room.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
     }
 
     @Test
@@ -205,8 +285,30 @@ internal class ChatRoomControllerImplTest {
         //THEN
         assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isGreaterThan(0)
-
     }
 
+    @Test
+    fun `can not get members of chatroom because room does not exist`(){
+        //GIVEN
+        val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every{roomService.getChatRoom(any())} returns null
+        //WHEN
+        val expected = underTest.getMembersOfChatRoom(room.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.data.size).isZero
+    }
+
+    @Test
+    fun `can not get members of chatroom because of SE exception`(){
+        //GIVEN
+        val room = factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        every{roomService.getChatRoom(any())} throws SQLException()
+        //WHEN
+        val expected = underTest.getMembersOfChatRoom(room.id)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
+        assertThat(expected.data.size).isZero
+    }
 
 }
