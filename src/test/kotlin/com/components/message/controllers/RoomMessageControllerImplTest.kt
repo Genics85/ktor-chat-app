@@ -11,6 +11,7 @@ import org.junit.jupiter.api.*
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import uk.co.jemos.podam.api.PodamFactoryImpl
+import java.sql.SQLException
 
 internal class RoomMessageControllerImplTest {
 
@@ -82,6 +83,30 @@ internal class RoomMessageControllerImplTest {
     }
 
     @Test
+    fun `can not get room message because message does not exist`(){
+        //GIVEN
+        val messageId=factory.manufacturePojoWithFullData(String::class.java)
+        every{service.getRoomMessage(any())} returns null
+        //WHEN
+        val expected=underTest.getRoomMessage(messageId)
+        //THEN
+        assertThat(expected.code).isEqualTo("204")
+        assertThat(expected.data.size).isZero
+    }
+
+    @Test
+    fun `can not get room message because of SE error`(){
+        //GIVEN
+        val messageId=factory.manufacturePojoWithFullData(String::class.java)
+        every { service.getRoomMessage(any())} throws SQLException()
+        //WHEN
+        val expected = underTest.getRoomMessage(messageId)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
+        asserrThat(expected.data.size).isZero
+    }
+
+    @Test
     fun deleteAllRoomMessages() {
         //GIVEN
         val roomId=factory.manufacturePojoWithFullData(String::class.java)
@@ -101,5 +126,16 @@ internal class RoomMessageControllerImplTest {
         val expected = underTest.deleteAllRoomMessages(roomId)
         //THEN
         assertThat(expected.code).isEqualTo("204")
+    }
+
+    @Test
+    fun `can not delete room messages because of SE error`(){
+        //GIVEN
+        val roomId=factory.manufacturePojoWithFullData(String::class.java)
+        every{service.deleteAllRoomMessages(any())} throws SQLException()
+        //WHEN
+        val expected = underTest.deleteAllRoomMessages(roomId)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
     }
 }
