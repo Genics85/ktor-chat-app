@@ -41,4 +41,5 @@ interface ChatRoomController {
      * function to get members of a chat room
      * **/
     fun getMembersOfChatRoom(chatRoomId:String):APIResponse<List<String>>
+
 }

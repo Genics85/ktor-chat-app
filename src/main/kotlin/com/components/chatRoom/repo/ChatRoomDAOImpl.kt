@@ -18,6 +18,13 @@ class ChatRoomDAOImpl : ChatRoomDAO {
     }
 
     /**
+     * function to get all chat room in db
+     * **/
+    override fun getAllChatRooms(): List<ChatRoom> {
+        TODO("Not yet implemented")
+    }
+
+    /**
      * function to delete chat room from database
      * **/
     override fun deleteChatRoom(id: String): Boolean {

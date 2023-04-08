@@ -12,6 +12,10 @@ interface ChatRoomDAO {
      * **/
     fun createChatRoom(room: ChatRoom):ChatRoom?
     /**
+     * function to get all chat room in db
+     * **/
+    fun getAllChatRooms():List<ChatRoom>
+    /**
      * function to delete chat room from database
      * **/
     fun deleteChatRoom(roomId:String):Boolean
