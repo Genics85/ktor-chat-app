@@ -48,6 +48,32 @@ internal class RoomMessageControllerImplTest {
     }
 
     @Test
+    fun `can not get room messages because room does not exist`(){
+        //GIVEN
+        val roomId=factory.manufacturePojoWithFullData(String::class.java)
+        every{service.getRoomMessages(any())} returns emptyList()
+        //WHEN
+        val expected = underTest.getRooMessages(roomId)
+        //THEN
+        assertThat(expected.code).isEqualTo("204")
+        assertThat(expected.data.size).isZero
+    }
+
+    @Test
+    fun `can not get room because of SE error`(){
+        //GIVEN
+        val roomId=factory.manufacturePojoWithFullData(String::class.java)
+        every { service.getRoomMessages(any()) } throws SQLException()
+        //WHEN
+        val expected = underTest.getRooMessages(roomId)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
+        assertThat(expected.data.size).isZero
+
+    }
+
+
+    @Test
     fun deleteRoomMessage() {
         //GIVEN
         val messageId=factory.manufacturePojoWithFullData(String::class.java)
@@ -56,6 +82,28 @@ internal class RoomMessageControllerImplTest {
         val expected=underTest.deleteRoomMessage(messageId)
         //THEN
         assertThat(expected.code).isEqualTo("200")
+    }
+
+    @Test
+    fun `can't delete room message because message does not exist`(){
+        //GIVEN
+        val messageId=factory.manufacturePojoWithFullData(String::class.java)
+        every{service.deleteRoomMessage(any())} returns false
+        //WHEN
+        val expected=underTest.deleteRoomMessage(messageId)
+        //THEN
+        assertThat(expected.code).isEqualTo("204")
+    }
+
+    @Test
+    fun `can not delete because of SE error`(){
+        //GIVEN
+        val messageId=factory.manufacturePojoWithFullData(String::class.java)
+        every{service.deleteRoomMessage(any())} throws SQLException()
+        //WHEN
+        val expected=underTest.deleteRoomMessage(messageId)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
     }
 
     @Test
@@ -68,6 +116,17 @@ internal class RoomMessageControllerImplTest {
         //THEN
         assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isOne
+    }
+
+    @Test
+    fun `couldn't create room message because of SQL Exception`(){
+        //GIVEN
+        val message=factory.manufacturePojoWithFullData(RoomMessage::class.java)
+        every{service.createRoomMessage(any())} throws SQLException()
+        //GIVEN
+        val expected=underTest.createRoomMessage(message)
+        //THEN
+        assertThat(expected.code).isEqualTo("500")
     }
 
     @Test
@@ -103,7 +162,7 @@ internal class RoomMessageControllerImplTest {
         val expected = underTest.getRoomMessage(messageId)
         //THEN
         assertThat(expected.code).isEqualTo("500")
-        asserrThat(expected.data.size).isZero
+        assertThat(expected.data.size).isZero
     }
 
     @Test
