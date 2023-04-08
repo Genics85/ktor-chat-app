@@ -10,7 +10,7 @@ interface RoomMessageDAO {
     /**
      * function to delete room message
      * **/
-    fun deleteRoomMessage(roomId:String,id:String):Boolean
+    fun deleteRoomMessage(messageId:String):Boolean
     /**
      * function to get all messages for a particular room
      * **/
@@ -18,5 +18,10 @@ interface RoomMessageDAO {
     /**
      * function to get all room messages
      * **/
+    fun getRoomMessage(messageId:String):RoomMessage?
+    /**
+     * function to get all room messages**/
     fun getAllRoomMessages():List<RoomMessage>
+    /**function to delete all room messages**/
+    fun deleteAllRoomMessages(roomId:String):Boolean
 }

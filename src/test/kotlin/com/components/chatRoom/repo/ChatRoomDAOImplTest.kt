@@ -131,8 +131,21 @@ internal class ChatRoomDAOImplTest {
     fun changeChatRoomName() {
         //GIVEN
         val room=rooms.first()
-        room.roomName="Aha ay3 d3"
+        room.name="Aha ay3 d3"
         //WHEN
-        val expected = underTest.changeChatRoomName(room.id,room.roomName)
+        val expected = underTest.changeChatRoomName(room.id,room.name)
+        //THEN
+        assertThat(expected).isTrue
     }
+    @Test
+    fun `can not change room name because room does not exist`(){
+        //GIVEN
+        val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        room.name="sokode"
+        //WHEN
+        val expected=underTest.changeChatRoomName(room.id,room.name)
+        //THEN
+        assertThat(expected).isFalse
+    }
+
 }

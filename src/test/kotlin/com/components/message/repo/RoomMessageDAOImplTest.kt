@@ -19,7 +19,7 @@ internal class RoomMessageDAOImplTest {
 
     private lateinit var messages:List<RoomMessage>
     private lateinit var underTest:RoomMessageDAOImpl
-    var factory:PodamFactoryImpl= PodamFactoryImpl()
+    private var factory:PodamFactoryImpl= PodamFactoryImpl()
 
     @BeforeAll
     fun setup(){
@@ -74,7 +74,7 @@ internal class RoomMessageDAOImplTest {
         //GIVEN
         val message = messages.first()
         //WHEN
-        val expected = underTest.getMessagesForRoom(message.roomId)
+        val expected = underTest.getRoomMessages(message.roomId)
         //THEN
         assertThat(expected.size).isGreaterThan(0)
         assertThat(expected.first()).isInstanceOf(RoomMessage::class.java)
@@ -85,7 +85,7 @@ internal class RoomMessageDAOImplTest {
         //GIVEN
         val message = factory.manufacturePojoWithFullData(RoomMessage::class.java)
         //WHEN
-        val expected = underTest.getMessagesForRoom(message.roomId)
+        val expected = underTest.getRoomMessages(message.roomId)
         //THEN
         assertThat(expected).isNull()
     }
@@ -98,5 +98,45 @@ internal class RoomMessageDAOImplTest {
         //THEN
         assertThat(expected.size).isGreaterThan(0)
         assertThat(expected.first()).isInstanceOf(RoomMessage::class.java)
+    }
+
+    @Test
+    fun getRoomMessage(){
+        //GIVEN
+        val message=messages.first()
+        //WHEN
+        val expected = underTest.getRoomMessage(message.id)
+        //THEN
+        assertThat(expected).isEqualTo(message)
+    }
+
+    @Test
+    fun `can not get room message because id does not exist`(){
+        //GIVEN
+        val message=factory.manufacturePojoWithFullData(RoomMessage::class.java)
+        //WHEN
+        val expected=underTest.getRoomMessage(message.id)
+        //THEN
+        assertThat(expected).isNull()
+    }
+
+    @Test
+    fun deleteAllRoomMessages(){
+        //GIVEN
+        val message=messages.first()
+        //WHEN
+        val expected= underTest.deleteAllRoomMessages(message.roomId)
+        //THEN
+        assertThat(expected).isTrue
+    }
+
+    @Test
+    fun `can not delete room messages because room does not exist`(){
+        //GIVEN
+        val message=factory.manufacturePojoWithFullData(RoomMessage::class.java)
+        //WHEN
+        val expected = underTest.deleteAllRoomMessages(message.roomId)
+        //THEN
+        assertThat(expected).isFalse
     }
 }

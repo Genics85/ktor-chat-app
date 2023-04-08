@@ -135,7 +135,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.deleteChatRoom(room.id)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("204")
     }
 
     @Test
@@ -206,7 +206,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected =underTest.changeChatRoomName(room.id,"something not new")
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("204")
     }
 
     @Test
@@ -221,7 +221,7 @@ internal class ChatRoomControllerImplTest {
     }
 
     @Test
-    fun `can not add user to chat room`(){
+    fun `failed to add user to chat room`(){
         //GIVEN
         val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
         every{roomService.addUserToChatRoom(any(),any())} returns false
@@ -261,7 +261,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.deleteChatRoom(room.id)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("204")
     }
 
     @Test

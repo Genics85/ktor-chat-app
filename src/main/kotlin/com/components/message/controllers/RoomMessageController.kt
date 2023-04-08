@@ -11,7 +11,7 @@ interface RoomMessageController {
     /**
      * function to delete a chat room message
      * **/
-    fun deleteRoomMessage(roomId:String,messageId:String):APIResponse<Boolean>
+    fun deleteRoomMessage(messageId:String):APIResponse<Boolean>
     /**
      * function to create room message
      * **/
@@ -19,7 +19,7 @@ interface RoomMessageController {
     /**
      * function to get specific message in a chat room
      * **/
-    fun getRoomMessage(roomID:String,messageId: String):APIResponse<RoomMessage>
+    fun getRoomMessage(messageId: String):APIResponse<RoomMessage>
     /**
      * function to delete all messages in chat room
      * **/

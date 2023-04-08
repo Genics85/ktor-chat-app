@@ -16,7 +16,7 @@ class RoomMessageControllerImpl(override val di: DI) : RoomMessageController, DI
     /**
      * function to delete a chat room message
      * **/
-    override fun deleteRoomMessage(roomId: String, messageId: String): APIResponse<Boolean> {
+    override fun deleteRoomMessage(messageId: String): APIResponse<Boolean> {
         TODO("Not yet implemented")
     }
 
@@ -30,7 +30,7 @@ class RoomMessageControllerImpl(override val di: DI) : RoomMessageController, DI
     /**
      * function to get specific message in a chat room
      * **/
-    override fun getRoomMessage(roomID: String, messageId: String): APIResponse<RoomMessage> {
+    override fun getRoomMessage(messageId: String): APIResponse<RoomMessage> {
         TODO("Not yet implemented")
     }
 

@@ -6,6 +6,6 @@ data class ChatRoom(
     val id:String,
     var membersIDs:MutableList<String>,
     val chatInitiator:String,
-    var roomName:String,
+    var name:String,
     val dateCreated:LocalDateTime
 )
