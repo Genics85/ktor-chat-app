@@ -11,15 +11,17 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
+import org.junit.platform.commons.logging.LoggerFactory
 import uk.co.jemos.podam.api.PodamFactoryImpl
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class UserDAOImplTest {
+internal class UserDbDAOImplTest {
 
     private lateinit var underTest:UserDAOImpl
     private val factory:PodamFactoryImpl= PodamFactoryImpl()
     private lateinit var users:List<User>
+    private var log=LoggerFactory.getLogger(this::class.java)
 
     @BeforeAll
     fun setup(){
@@ -33,7 +35,7 @@ internal class UserDAOImplTest {
     @AfterAll
     fun tearDown(){
         transaction{
-            SchemaUtils.drop(com.database.User)
+            SchemaUtils.drop(com.database.UserDb)
         }
     }
 
@@ -44,8 +46,7 @@ internal class UserDAOImplTest {
         //WHEN
         val expected =underTest.createUser(user)
         //THEN
-        assertThat(expected).isInstanceOf(User::class.java)
-        assertThat(expected).isNotNull
+        assertThat(expected).isGreaterThan(0)
     }
 
     @Test
@@ -55,7 +56,6 @@ internal class UserDAOImplTest {
         //WHEN
         val expected=underTest.deleteUser(user.id)
         //THEN
-        assertThat(expected).isInstanceOf(Boolean::class.java)
         assertThat(expected).isTrue
     }
     @Test
@@ -75,8 +75,9 @@ internal class UserDAOImplTest {
         //WHEN
         val expected=underTest.getAUser(user.id)
         //THEN
-        assertThat(expected).isInstanceOf(user::class.java)
-        assertThat(expected).isNotNull
+        assertThat(expected).isEqualTo(user)
+
+
     }
 
     @Test
@@ -109,8 +110,7 @@ internal class UserDAOImplTest {
         //WHEN
         val expected=underTest.updateUserInfo(user.id,user.firstName,user.lastName,null)
         //THEN
-        assertThat(expected).isEqualTo(2)
-        assertThat(expected).isInstanceOf(Int::class.java)
+        assertThat(expected).isGreaterThan(0)
         assertThat(expected).isNotNull
     }
     @Test

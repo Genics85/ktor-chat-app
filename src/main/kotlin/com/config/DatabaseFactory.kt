@@ -3,7 +3,7 @@ package com.config
 import com.database.ChatRoom
 import com.database.DirectMessage
 import com.database.RoomMessage
-import com.database.User
+import com.database.UserDb
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
@@ -31,7 +31,7 @@ object DatabaseFactory {
         val pool= hikari()
         Database.connect(pool)
         transaction{
-            SchemaUtils.createMissingTablesAndColumns(User)
+            SchemaUtils.createMissingTablesAndColumns(UserDb)
             SchemaUtils.createMissingTablesAndColumns(DirectMessage)
             SchemaUtils.createMissingTablesAndColumns(RoomMessage)
             SchemaUtils.createMissingTablesAndColumns(ChatRoom)

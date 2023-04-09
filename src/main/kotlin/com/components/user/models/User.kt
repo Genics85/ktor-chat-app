@@ -13,6 +13,6 @@ data class User(
     var firstName:String,
     var lastName:String,
     var userName:String,
-    var type:UserType=UserType.CONSUMER,
-    val dateCreated:LocalDateTime= LocalDateTime.now()
+    var type:String=UserType.CONSUMER.toString(),
+    val dateCreated:String= LocalDateTime.now().toString()
 )

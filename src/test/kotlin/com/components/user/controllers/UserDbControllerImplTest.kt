@@ -20,7 +20,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl
 import java.sql.SQLException
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class UserControllerImplTest {
+internal class UserDbControllerImplTest {
     private lateinit var underTest:UserControllerImpl
     private lateinit var service:UserDAO
     private lateinit var roomService:ChatRoomDAO
@@ -46,7 +46,7 @@ internal class UserControllerImplTest {
     fun createUser() {
         //GIVEN
         val user = factory.manufacturePojoWithFullData(User::class.java)
-        every { service.createUser(any())} returns user
+        every { service.createUser(any())} returns 1
         //WHEN
         val expected = underTest.createUser(user)
         //THEN
