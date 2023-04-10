@@ -10,7 +10,7 @@ interface ChatRoomDAO {
     /**
      * function to create new chatroom
      * **/
-    fun createChatRoom(room: ChatRoom):ChatRoom?
+    fun createChatRoom(room: ChatRoom): Int
     /**
      * function to get all chat room in db
      * **/
@@ -30,6 +30,6 @@ interface ChatRoomDAO {
     /**
      * Function to change the name of a chat room
      * **/
-    fun changeChatRoomName(roomId:String,newName:String):Boolean
+    fun changeChatRoomName(roomId:String,newName:String): Int
 
 }

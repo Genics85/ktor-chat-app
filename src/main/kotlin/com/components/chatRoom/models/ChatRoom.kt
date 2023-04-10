@@ -7,5 +7,5 @@ data class ChatRoom(
     var membersIDs:MutableList<String>,
     val chatInitiator:String,
     var name:String,
-    val dateCreated:LocalDateTime
+    val dateCreated:String
 )

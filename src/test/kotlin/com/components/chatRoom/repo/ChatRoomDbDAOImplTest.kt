@@ -2,6 +2,7 @@ package com.components.chatRoom.repo
 
 import com.components.chatRoom.models.ChatRoom
 import com.config.DatabaseFactory
+import com.database.ChatRoomDb
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -33,7 +34,7 @@ internal class ChatRoomDAOImplTest {
     @AfterAll
     fun tearDown(){
         transaction{
-            SchemaUtils.drop(com.database.ChatRoom)
+            SchemaUtils.drop(ChatRoomDb)
         }
     }
 
@@ -64,7 +65,7 @@ internal class ChatRoomDAOImplTest {
         //WHEN
         val expected = underTest.createChatRoom(room)
         //THEN
-        assertThat(expected).isInstanceOf(ChatRoom::class.java)
+        assertThat(expected).isOne
     }
 
     @Test
@@ -130,12 +131,12 @@ internal class ChatRoomDAOImplTest {
     @Test
     fun changeChatRoomName() {
         //GIVEN
-        val room=rooms.first()
-        room.name="Aha ay3 d3"
+        val room=rooms[2]
+        room.name="somethinggreat"
         //WHEN
         val expected = underTest.changeChatRoomName(room.id,room.name)
         //THEN
-        assertThat(expected).isTrue
+        assertThat(expected).isGreaterThan(0)
     }
     @Test
     fun `can not change room name because room does not exist`(){
@@ -145,7 +146,7 @@ internal class ChatRoomDAOImplTest {
         //WHEN
         val expected=underTest.changeChatRoomName(room.id,room.name)
         //THEN
-        assertThat(expected).isFalse
+        assertThat(expected).isZero
     }
 
 }

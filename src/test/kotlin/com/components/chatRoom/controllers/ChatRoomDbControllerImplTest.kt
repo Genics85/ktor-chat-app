@@ -48,7 +48,7 @@ internal class ChatRoomControllerImplTest {
     fun createChatRoom() {
         //GIVEN
         val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
-        every{roomService.createChatRoom(any())} returns room
+        every{roomService.createChatRoom(any())} returns 1
         //WHEN
         val expected=underTest.createChatRoom(room)
         //THEN
@@ -72,7 +72,7 @@ internal class ChatRoomControllerImplTest {
     fun ` failed to create chat room`(){
         //GIVEN
         val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
-        every { roomService.createChatRoom(any()) } returns null
+        every { roomService.createChatRoom(any()) } returns 0
         //WHEN
         val expected=underTest.createChatRoom(room)
         //THEN
@@ -191,7 +191,7 @@ internal class ChatRoomControllerImplTest {
     fun changeChatRoomName() {
         //GIVEN
         val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
-        every{roomService.changeChatRoomName(any(),any())} returns true
+        every{roomService.changeChatRoomName(any(),any())} returns 1
         //WHEN
         val expected = underTest.changeChatRoomName(room.id,"something new")
         //THEN
@@ -202,7 +202,7 @@ internal class ChatRoomControllerImplTest {
     fun `can not change room name because room does not exist`(){
         //GIVEN
         val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
-        every { roomService.changeChatRoomName(any(),any()) } returns false
+        every { roomService.changeChatRoomName(any(),any()) } returns 1
         //WHEN
         val expected =underTest.changeChatRoomName(room.id,"something not new")
         //THEN

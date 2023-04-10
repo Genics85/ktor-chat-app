@@ -6,7 +6,7 @@ interface DirectMessageDAO {
     /**
      * function to create a direct message
      * **/
-    fun createDirectMessage(message:DirectMessage):DirectMessage?
+    fun createDirectMessage(message:DirectMessage): Int
     /**
      * function to delete direct message
      * **/

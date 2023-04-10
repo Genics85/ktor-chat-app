@@ -1,9 +1,6 @@
 package com.config
 
-import com.database.ChatRoom
-import com.database.DirectMessage
-import com.database.RoomMessage
-import com.database.UserDb
+import com.database.*
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
@@ -32,9 +29,9 @@ object DatabaseFactory {
         Database.connect(pool)
         transaction{
             SchemaUtils.createMissingTablesAndColumns(UserDb)
-            SchemaUtils.createMissingTablesAndColumns(DirectMessage)
+            SchemaUtils.createMissingTablesAndColumns(DirectMessageDb)
             SchemaUtils.createMissingTablesAndColumns(RoomMessage)
-            SchemaUtils.createMissingTablesAndColumns(ChatRoom)
+            SchemaUtils.createMissingTablesAndColumns(ChatRoomDb)
         }
         log.info("Database connection was successful")
     }

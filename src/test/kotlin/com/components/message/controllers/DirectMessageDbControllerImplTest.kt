@@ -12,7 +12,7 @@ import org.kodein.di.bindSingleton
 import uk.co.jemos.podam.api.PodamFactoryImpl
 import java.sql.SQLException
 
-internal class DirectMessageControllerImplTest {
+internal class DirectMessageDbControllerImplTest {
 
     private lateinit var underTest:DirectMessageControllerImpl
     private lateinit var service: DirectMessageDAO

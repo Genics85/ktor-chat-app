@@ -15,7 +15,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class DirectMessageDAOImplTest {
+internal class DirectMessageDbDAOImplTest {
     private lateinit var underTest:DirectMessageDAOImpl
     private lateinit var messages:List<DirectMessage>
     private var factory:PodamFactoryImpl = PodamFactoryImpl()
@@ -33,7 +33,7 @@ internal class DirectMessageDAOImplTest {
     @AfterAll
     fun tearDown(){
         transaction{
-            SchemaUtils.drop(com.database.DirectMessage)
+            SchemaUtils.drop(com.database.DirectMessageDb)
         }
     }
 
