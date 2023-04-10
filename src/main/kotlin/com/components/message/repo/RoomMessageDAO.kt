@@ -6,7 +6,7 @@ interface RoomMessageDAO {
     /***
      * function to create a room message
      * */
-    fun createRoomMessage(message:RoomMessage):RoomMessage?
+    fun createRoomMessage(message:RoomMessage): Int
     /**
      * function to delete room message
      * **/

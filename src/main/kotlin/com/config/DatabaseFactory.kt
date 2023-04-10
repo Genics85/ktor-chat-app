@@ -30,7 +30,7 @@ object DatabaseFactory {
         transaction{
             SchemaUtils.createMissingTablesAndColumns(UserDb)
             SchemaUtils.createMissingTablesAndColumns(DirectMessageDb)
-            SchemaUtils.createMissingTablesAndColumns(RoomMessage)
+            SchemaUtils.createMissingTablesAndColumns(RoomMessageDb)
             SchemaUtils.createMissingTablesAndColumns(ChatRoomDb)
         }
         log.info("Database connection was successful")

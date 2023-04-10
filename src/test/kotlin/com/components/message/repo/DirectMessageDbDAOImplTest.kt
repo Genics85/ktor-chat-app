@@ -44,7 +44,7 @@ internal class DirectMessageDbDAOImplTest {
         //WHEN
         val expected=underTest.createDirectMessage(message)
         //THEN
-        assertThat(expected).isInstanceOf(DirectMessage::class.java)
+        assertThat(expected).isEqualTo(1)
         assertThat(expected).isNotNull
     }
 

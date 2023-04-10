@@ -143,7 +143,7 @@ internal class DirectMessageDbControllerImplTest {
     fun createDirectMessage() {
         //GIVEN
         val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
-        every{service.createDirectMessage(any())} returns message
+        every{service.createDirectMessage(any())} returns 1
         //WHEN
         val expected = underTest.createDirectMessage(message)
         //THEN
@@ -155,7 +155,7 @@ internal class DirectMessageDbControllerImplTest {
     fun `failed to create direct message`(){
         //GIVEN
         val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
-        every { service.createDirectMessage(any()) } returns null
+        every { service.createDirectMessage(any()) } returns 0
         //WHEN
         val expected=underTest.createDirectMessage(message)
         //THEN
