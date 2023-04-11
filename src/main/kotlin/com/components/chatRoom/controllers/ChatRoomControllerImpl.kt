@@ -126,10 +126,10 @@ class ChatRoomControllerImpl(override val di: DI) : ChatRoomController,DIAware {
          val roomNameChanged:APIResponse<String> = try{
              if(chatRoomId != null){
                  val isChanged = roomDAO.changeChatRoomName(chatRoomId,newName)
-                 if(isChanged > 0){
-                     <APIResponse("200","20","chat room name changed successfully",listOf())
+                 if(isChanged > 0) {
+                     APIResponse("200","20","chat room name changed successfully",listOf())
                  }else{
-                     APIResponse("204","20","Chat room couldn't be deleted because it does not exist")
+                     APIResponse("204","20","Chat room couldn't be deleted because it does not exist",listOf())
                  }
              }else{
                  APIResponse("404","20","Couldn't change room name because room id is null",listOf())
@@ -158,6 +158,22 @@ class ChatRoomControllerImpl(override val di: DI) : ChatRoomController,DIAware {
      * function to get members of a chat room
      * **/
     override fun getMembersOfChatRoom(chatRoomId: String): APIResponse<List<String>> {
-        TODO("Not yet implemented")
+        val members:APIResponse<List<String>> = try{
+            if(chatRoomId != null){
+                val room = roomDAO.getChatRoom(chatRoomId)
+                val roomMembers = room.membersIDs
+                if(roomMembers.isNotEmpty()){
+                    APIResponse("201","20","Got list of members in chat room",listOf(roomMembers))
+                }else{
+                    APIResponse("204","20","Room has no members", listOf())
+                }
+            }else{
+                APIResponse("404","20","Couldn't get room because id was null",listOf())
+            }
+        }catch (se:SQLException){
+            APIResponse("500","20","Couldn't get room members because of $se error",listOf())
+        }
+        return members
     }
+
 }
