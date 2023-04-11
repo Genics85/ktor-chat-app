@@ -161,7 +161,7 @@ class ChatRoomControllerImpl(override val di: DI) : ChatRoomController,DIAware {
         val members:APIResponse<List<String>> = try{
             if(chatRoomId != null){
                 val room = roomDAO.getChatRoom(chatRoomId)
-                val roomMembers = room.membersIDs
+                val roomMembers = room?.membersIDs ?: listOf()
                 if(roomMembers.isNotEmpty()){
                     APIResponse("201","20","Got list of members in chat room",listOf(roomMembers))
                 }else{

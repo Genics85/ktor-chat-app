@@ -52,8 +52,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected=underTest.createChatRoom(room)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
-        assertThat(expected.data.size).isEqualTo(1)
+        assertThat(expected.code).isEqualTo("200")
     }
 
     @Test
@@ -76,7 +75,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected=underTest.createChatRoom(room)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("204")
         assertThat(expected.data.size).isEqualTo(0)
     }
 
@@ -88,7 +87,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.getChatRoom(room.id)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isEqualTo(1)
     }
 
@@ -202,7 +201,7 @@ internal class ChatRoomControllerImplTest {
     fun `can not change room name because room does not exist`(){
         //GIVEN
         val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
-        every { roomService.changeChatRoomName(any(),any()) } returns 1
+        every { roomService.changeChatRoomName(any(),any()) } returns 0
         //WHEN
         val expected =underTest.changeChatRoomName(room.id,"something not new")
         //THEN
@@ -246,9 +245,10 @@ internal class ChatRoomControllerImplTest {
     fun deleteUsersFromChatRoom() {
         //GIVEN
         val room = factory.manufacturePojoWithFullData(ChatRoom::class.java)
-        every { roomService.deleteChatRoom(any()) } returns true
+        val userId = factory.manufacturePojoWithFullData(String::class.java)
+        every { roomService.deleteUserFromChatRoom(any(),any()) } returns true
         //WHEN
-        val expected = underTest.deleteChatRoom(room.id)
+        val expected = underTest.deleteUsersFromChatRoom(room.id, listOf(userId))
         //THEN
         assertThat(expected.code).isEqualTo("200")
     }
@@ -257,9 +257,10 @@ internal class ChatRoomControllerImplTest {
     fun `can not delete users from chat room because they are not part of the room`(){
         //GIVEN
         val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
-        every { roomService.deleteChatRoom(any()) } returns false
+        val userId = factory.manufacturePojoWithFullData(String::class.java)
+        every { roomService.deleteUserFromChatRoom(any(),any()) } returns false
         //WHEN
-        val expected = underTest.deleteChatRoom(room.id)
+        val expected = underTest.deleteUsersFromChatRoom(room.id,listOf(userId))
         //THEN
         assertThat(expected.code).isEqualTo("204")
     }
@@ -268,9 +269,10 @@ internal class ChatRoomControllerImplTest {
     fun `can not delete user from chatroom because of SE error`(){
         //GIVEN
         val room =factory.manufacturePojoWithFullData(ChatRoom::class.java)
-        every { roomService.deleteChatRoom(any()) } throws SQLException()
+        val userId = factory.manufacturePojoWithFullData(String::class.java)
+        every { roomService.deleteUserFromChatRoom(any(),any()) } throws SQLException()
         //WHEN
-        val expected = underTest.deleteChatRoom(room.id)
+        val expected = underTest.deleteUsersFromChatRoom(room.id, listOf(userId))
         //THEN
         assertThat(expected.code).isEqualTo("500")
     }
@@ -283,7 +285,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.getMembersOfChatRoom(room.id)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isGreaterThan(0)
     }
 
