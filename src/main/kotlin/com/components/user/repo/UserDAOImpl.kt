@@ -60,17 +60,11 @@ class UserDAOImpl : UserDAO {
     /**
      * update user information
      * **/
-    override fun updateUserInfo(userId: String, firstName: String?, lastName: String?, userName: String?): Int = transaction{
-        UserDb.update ({UserDb.id eq userId}){
-            if(firstName != null){
-                it[UserDb.firstName] = firstName
-            }
-            if(lastName != null){
-                it[UserDb.lastName] = lastName
-            }
-            if(userName != null){
-                it[UserDb.userName] = userName
-            }
+    override fun updateUserInfo(user:User): Int = transaction{
+        UserDb.update ({UserDb.id eq user.id}){
+            it[firstName] = user.firstName
+            it[lastName] = user.lastName
+            it[userName] = user.userName
         }
     }
 }

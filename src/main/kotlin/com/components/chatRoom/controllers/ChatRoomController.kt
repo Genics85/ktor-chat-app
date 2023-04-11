@@ -24,7 +24,7 @@ interface ChatRoomController {
     /**
      * function to get a specific chat room message
      * **/
-    fun getAChatRoomMessage(chatRoomId:String,messageId:String):APIResponse<RoomMessage>
+    fun getAChatRoomMessage(messageId:String):APIResponse<RoomMessage>
     /**
      * function to change chat room name
      * **/

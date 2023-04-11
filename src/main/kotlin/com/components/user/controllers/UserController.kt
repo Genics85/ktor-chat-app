@@ -15,7 +15,7 @@ interface UserController {
     /**
      * function update user details
      * **/
-    fun updateUserDetails(firstname:String?,lastName:String?,userName:String?):APIResponse<Int>
+    fun updateUserDetails(userId: String,firstname:String?,lastName:String?,userName:String?):APIResponse<Int>
     /**
      * function to get the groups a user is part of
      * **/

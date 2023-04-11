@@ -107,7 +107,7 @@ internal class UserDbDAOImplTest {
         user.firstName="Nsano"
         user.lastName="Fintech"
         //WHEN
-        val expected=underTest.updateUserInfo(user.id,user.firstName,user.lastName,null)
+        val expected=underTest.updateUserInfo(user)
         //THEN
         assertThat(expected).isGreaterThan(0)
         assertThat(expected).isNotNull
@@ -119,7 +119,7 @@ internal class UserDbDAOImplTest {
         user.firstName="wont change"
         user.userName="vim"
         //WHEN
-        val expected=underTest.updateUserInfo(user.id,user.firstName,null,user.userName)
+        val expected=underTest.updateUserInfo(user)
         //THEN
         assertThat(expected).isEqualTo(0)
     }

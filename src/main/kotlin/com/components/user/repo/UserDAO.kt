@@ -22,5 +22,5 @@ interface UserDAO {
     /**
      * update user information
      * **/
-    fun updateUserInfo( userId:String,firstname:String?,lastName:String?,userName:String?):Int
+    fun updateUserInfo( user:User):Int
 }

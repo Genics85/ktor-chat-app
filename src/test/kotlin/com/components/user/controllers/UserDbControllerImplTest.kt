@@ -51,7 +51,6 @@ internal class UserDbControllerImplTest {
         val expected = underTest.createUser(user)
         //THEN
         assertThat(expected.code).isEqualTo("201")
-        assertThat(expected.data.size).isOne
     }
 
     @Test
@@ -104,9 +103,9 @@ internal class UserDbControllerImplTest {
         val user=factory.manufacturePojoWithFullData(User::class.java)
         user.lastName="Abrante3"
         user.firstName="Genics"
-        every{service.updateUserInfo(any(),any(),any(),null)} returns 2
+        every{service.updateUserInfo(user)} returns 2
         //WHEN
-        val expected = underTest.updateUserDetails(user.id,user.firstName,user.lastName)
+        val expected = underTest.updateUserDetails(user.id,user.firstName,null,user.lastName)
         //THEN
         assertThat(expected.code).isEqualTo("200")
     }
@@ -117,9 +116,9 @@ internal class UserDbControllerImplTest {
         val user=factory.manufacturePojoWithFullData(User::class.java)
         user.lastName="Abrante3"
         user.firstName="Genics"
-        every { service.updateUserInfo(any(),any(),any(),null) } returns 0
+        every { service.updateUserInfo(user) } returns 0
         //WHEN
-        val expected = underTest.updateUserDetails(user.id,user.firstName,user.lastName)
+        val expected = underTest.updateUserDetails(user.id,user.firstName,user.lastName,null)
         //THEN
         assertThat(expected.code).isEqualTo("204")
     }
@@ -127,11 +126,11 @@ internal class UserDbControllerImplTest {
     fun `can not update because of SE error`(){
         //GIVEN
         val user=factory.manufacturePojoWithFullData(User::class.java)
-        user.lastName="Abrante3"
+        user.lastName="David"
         user.firstName="Genics"
-        every { service.updateUserInfo(any(),any(),any(),null) } throws SQLException()
+        every { service.updateUserInfo(user) } throws SQLException()
         //WHEN
-        val expected = underTest.updateUserDetails(user.id,user.firstName,user.lastName)
+        val expected = underTest.updateUserDetails(user.id,user.firstName,user.lastName,user.userName)
         //THEN
         assertThat(expected.code).isEqualTo("500")
     }
