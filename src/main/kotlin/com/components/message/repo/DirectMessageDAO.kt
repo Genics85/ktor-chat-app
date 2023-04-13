@@ -4,6 +4,10 @@ import com.components.message.models.DirectMessage
 
 interface DirectMessageDAO {
     /**
+     * function to get a single direct message
+     * **/
+    fun getDirectMessage(messageId:String):DirectMessage?
+    /**
      * function to create a direct message
      * **/
     fun createDirectMessage(message:DirectMessage): Int

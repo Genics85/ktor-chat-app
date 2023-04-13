@@ -6,10 +6,9 @@ import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import uk.co.jemos.podam.api.PodamFactoryImpl
 
@@ -51,7 +50,7 @@ internal class DirectMessageDbDAOImplTest {
     @Test
     fun deleteDirectMessage() {
         //GIVEN
-        val message = messages.first()
+        val message = underTest.getAllDirectMessages().first()
         //WHEN
         val expected=underTest.deleteDirectMessage(message.id)
         //THEN
@@ -71,7 +70,7 @@ internal class DirectMessageDbDAOImplTest {
     @Test
     fun getDirectMessagesForRecipient() {
         //GIVEN
-        val message = messages.first()
+        val message = underTest.getAllDirectMessages().first()
         //WHEN
         val expected = underTest.getDirectMessagesForRecipient(message.recipientId)
         //THEN
@@ -93,7 +92,7 @@ internal class DirectMessageDbDAOImplTest {
     @Test
     fun getDirectMessageFromSender() {
         //GIVEN
-        val message = messages.first()
+        val message = underTest.getAllDirectMessages().first()
         //WHEN
         val expected = underTest.getDirectMessageFromSender(message.senderId)
         //THEN
@@ -119,5 +118,25 @@ internal class DirectMessageDbDAOImplTest {
         //THEN
         assertThat(expected.size).isGreaterThan(0)
         assertThat(expected.first()).isInstanceOf(DirectMessage::class.java)
+    }
+
+    @Test
+    fun getDirectMessage(){
+        //GIVEN
+        val message = underTest.getAllDirectMessages().first()
+        //WHEN
+        val expected = underTest.getDirectMessage(message.id)
+        //THEN
+        assertThat(expected).isNotNull
+    }
+
+    @Test
+    fun `can not get direct message because it does not exist in db`(){
+        //GIVEN
+        val messageId = factory.manufacturePojoWithFullData(String::class.java)
+        //WHEN
+        val expected = underTest.getDirectMessage(messageId)
+        //THEN
+        assertThat(expected).isNull()
     }
 }

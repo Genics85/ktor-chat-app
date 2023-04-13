@@ -6,12 +6,10 @@ import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.platform.commons.logging.LoggerFactory
 import uk.co.jemos.podam.api.PodamFactoryImpl
 
 
@@ -52,7 +50,7 @@ internal class UserDbDAOImplTest {
     @Test
     fun deleteUser() {
         //GIVEN
-        val user=users.first()
+        val user=underTest.getAllUsers().first()
         //WHEN
         val expected=underTest.deleteUser(user.id)
         //THEN
@@ -71,7 +69,7 @@ internal class UserDbDAOImplTest {
     @Test
     fun getAUser() {
         //GIVEN
-        val user=users[1]
+        val user=underTest.getAllUsers().first()
         //WHEN
         val expected=underTest.getAUser(user.id)
         //THEN
@@ -103,7 +101,7 @@ internal class UserDbDAOImplTest {
     @Test
     fun updateUserInfo() {
         //GIVEN
-        val user=users[2]
+        val user=underTest.getAllUsers().first()
         user.firstName="Nsano"
         user.lastName="Fintech"
         //WHEN

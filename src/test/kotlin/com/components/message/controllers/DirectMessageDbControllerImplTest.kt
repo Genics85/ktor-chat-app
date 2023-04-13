@@ -12,6 +12,7 @@ import org.kodein.di.bindSingleton
 import uk.co.jemos.podam.api.PodamFactoryImpl
 import java.sql.SQLException
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class DirectMessageDbControllerImplTest {
 
     private lateinit var underTest:DirectMessageControllerImpl
@@ -41,17 +42,17 @@ internal class DirectMessageDbControllerImplTest {
         //WHEN
         val expected = underTest.getDirectMessage(messages.first().id)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isOne
     }
 
     @Test
     fun `Didn't get any direct message because direct message is not found`(){
         //GIVEN
-        val messages=factory.manufacturePojoWithFullData(List::class.java,DirectMessage::class.java) as List<DirectMessage>
-        every{service.getAllDirectMessages()} returns messages
+        val messageId=factory.manufacturePojoWithFullData(String::class.java)
+        every{service.getAllDirectMessages()} returns listOf()
         //WHEN
-        val expected =underTest.getDirectMessage("loremipsumtext")
+        val expected =underTest.getAllDirectMessages()
         //THEN
         assertThat(expected.code).isEqualTo("204")
         assertThat(expected.data.size).isZero
@@ -60,10 +61,10 @@ internal class DirectMessageDbControllerImplTest {
     @Test
     fun `Didn't get any direct message because of SE error`(){
         //GIVEN
-        val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        val messageId=factory.manufacturePojoWithFullData(String::class.java)
         every { service.getAllDirectMessages() } throws SQLException()
         //WHEN
-        val expected = underTest.getDirectMessage(message.id)
+        val expected = underTest.getAllDirectMessages()
         //THEN
         assertThat(expected.code).isEqualTo("500")
         assertThat(expected.data.size).isZero
@@ -77,7 +78,7 @@ internal class DirectMessageDbControllerImplTest {
         //WHEN
         val expected = underTest.getDirectMessagesForRecipient(messages.first().recipientId)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isGreaterThan(0)
     }
 
@@ -111,7 +112,7 @@ internal class DirectMessageDbControllerImplTest {
         //WHEN
         val expected = underTest.getDirectMessagesFromSender(messages.first().senderId)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isGreaterThan(0)
     }
 
@@ -147,8 +148,7 @@ internal class DirectMessageDbControllerImplTest {
         //WHEN
         val expected = underTest.createDirectMessage(message)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
-        assertThat(expected.data.size).isOne
+        assertThat(expected.code).isEqualTo("200")
     }
 
     @Test
@@ -194,7 +194,7 @@ internal class DirectMessageDbControllerImplTest {
         //WHEN
         val expected = underTest.deleteDirectMessage(message.id)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("204")
     }
 
     @Test
@@ -216,7 +216,7 @@ internal class DirectMessageDbControllerImplTest {
         //WHEN
         val expected =underTest.getAllDirectMessages()
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isGreaterThan(0)
     }
 

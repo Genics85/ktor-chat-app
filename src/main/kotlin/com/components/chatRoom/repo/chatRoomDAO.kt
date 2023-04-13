@@ -22,11 +22,15 @@ interface ChatRoomDAO {
     /**
      * Remove user from chat room
      * **/
-    fun deleteUserFromChatRoom(roomId:String,userId:String):Boolean
+    fun deleteUserFromChatRoom(roomId:String,userId:List<String>):Boolean
     /**
      * Add user to the chat room
      * **/
-    fun addUserToChatRoom(roomId:String,userId:String):Boolean
+    fun addUserToChatRoom(roomId:String,userId:List<String>):Boolean
+    /**
+     * function to update the users in a group remove/add
+     * **/
+    fun updateUsers(roomId:String,members:String):Boolean
     /**
      * Function to change the name of a chat room
      * **/

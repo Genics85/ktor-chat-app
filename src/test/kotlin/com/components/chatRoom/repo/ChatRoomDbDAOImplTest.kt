@@ -131,7 +131,7 @@ internal class ChatRoomDAOImplTest {
     @Test
     fun changeChatRoomName() {
         //GIVEN
-        val room=rooms[2]
+        val room=underTest.getAllChatRooms().first()
         room.name="somethinggreat"
         //WHEN
         val expected = underTest.changeChatRoomName(room.id,room.name)

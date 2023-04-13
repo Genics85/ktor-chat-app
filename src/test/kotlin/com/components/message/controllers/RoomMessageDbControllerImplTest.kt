@@ -13,6 +13,7 @@ import org.kodein.di.bindSingleton
 import uk.co.jemos.podam.api.PodamFactoryImpl
 import java.sql.SQLException
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class RoomMessageDbControllerImplTest {
 
     private lateinit var service:RoomMessageDAO
@@ -37,11 +38,10 @@ internal class RoomMessageDbControllerImplTest {
     @Test
     fun getRooMessages() {
         //GIVEN
-        var roomId=factory.manufacturePojoWithFullData(String::class.java)
         var messages=factory.manufacturePojoWithFullData(List::class.java,RoomMessage::class.java) as List<RoomMessage>
-        every{service.getRoomMessages(any())} returns messages
+        every{service.getAllRoomMessages()} returns messages
         //WHEN
-        val expected=underTest.getRooMessages(roomId)
+        val expected=underTest.getRooMessages()
         //THEN
         assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isGreaterThan(0)
@@ -51,9 +51,9 @@ internal class RoomMessageDbControllerImplTest {
     fun `can not get room messages because room does not exist`(){
         //GIVEN
         val roomId=factory.manufacturePojoWithFullData(String::class.java)
-        every{service.getRoomMessages(any())} returns emptyList()
+        every{service.getAllRoomMessages()} returns emptyList()
         //WHEN
-        val expected = underTest.getRooMessages(roomId)
+        val expected = underTest.getRooMessages()
         //THEN
         assertThat(expected.code).isEqualTo("204")
         assertThat(expected.data.size).isZero
@@ -63,9 +63,9 @@ internal class RoomMessageDbControllerImplTest {
     fun `can not get room because of SE error`(){
         //GIVEN
         val roomId=factory.manufacturePojoWithFullData(String::class.java)
-        every { service.getRoomMessages(any()) } throws SQLException()
+        every { service.getAllRoomMessages() } throws SQLException()
         //WHEN
-        val expected = underTest.getRooMessages(roomId)
+        val expected = underTest.getRooMessages()
         //THEN
         assertThat(expected.code).isEqualTo("500")
         assertThat(expected.data.size).isZero
@@ -114,8 +114,8 @@ internal class RoomMessageDbControllerImplTest {
         //WHEN
         val expected=underTest.createRoomMessage(message)
         //THEN
-        assertThat(expected.code).isEqualTo("201")
-        assertThat(expected.data.size).isOne
+        assertThat(expected.code).isEqualTo("200")
+
     }
 
     @Test

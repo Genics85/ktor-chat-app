@@ -7,10 +7,9 @@ import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import uk.co.jemos.podam.api.PodamFactoryImpl
 
@@ -52,7 +51,7 @@ internal class RoomMessageDbDAOImplTest {
     @Test
     fun deleteRoomMessage() {
         //GIVEN
-        val message = messages[2]
+        val message = underTest.getAllRoomMessages().first()
         //WHEN
         val expected = underTest.deleteRoomMessage(message.id)
         //THEN
@@ -72,7 +71,7 @@ internal class RoomMessageDbDAOImplTest {
     @Test
     fun getMessagesForRoom() {
         //GIVEN
-        val message = messages[2]
+        val message = underTest.getAllRoomMessages().first()
         //WHEN
         val expected = underTest.getRoomMessages(message.roomId)
         //THEN
@@ -103,7 +102,7 @@ internal class RoomMessageDbDAOImplTest {
     @Test
     fun getRoomMessage(){
         //GIVEN
-        val message=messages[2]
+        val message=underTest.getAllRoomMessages().first()
         //WHEN
         val expected = underTest.getRoomMessage(message.id)
         //THEN

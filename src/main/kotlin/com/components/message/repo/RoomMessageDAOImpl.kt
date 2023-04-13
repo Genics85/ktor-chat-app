@@ -5,6 +5,7 @@ import com.database.RoomMessageDb
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.time.LocalDateTime
 
 class RoomMessageDAOImpl : RoomMessageDAO {
     /**
@@ -15,7 +16,7 @@ class RoomMessageDAOImpl : RoomMessageDAO {
         senderId = row[RoomMessageDb.senderId],
         roomId = row[RoomMessageDb.roomId],
         content = row[RoomMessageDb.content],
-        timeSent = row[RoomMessageDb.timeSent]
+        timeSent = LocalDateTime.parse(row[RoomMessageDb.timeSent])
     )
 
     /***
@@ -27,7 +28,7 @@ class RoomMessageDAOImpl : RoomMessageDAO {
             it[senderId] = message.senderId
             it[roomId] = message.roomId
             it[content] = message.content
-            it[timeSent] = message.timeSent
+            it[timeSent] = message.timeSent.toString()
         }.insertedCount
     }
 

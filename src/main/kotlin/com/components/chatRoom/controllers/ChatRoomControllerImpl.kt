@@ -28,7 +28,6 @@ class ChatRoomControllerImpl(override val di: DI) : ChatRoomController,DIAware {
             }else{
                 APIResponse("404","20","Couldn't create chat chatRoom because its null", listOf())
             }
-
         }catch(se:SQLException){
             APIResponse("500","20","Couldn't create chat room because of $se error",listOf())
         }
@@ -144,7 +143,18 @@ class ChatRoomControllerImpl(override val di: DI) : ChatRoomController,DIAware {
      * function to add a user/s to chat room
      * **/
     override fun addUserToChatRoom(chatRoomId: String, usersId: List<String>): APIResponse<Int> {
-        TODO("Not yet implemented")
+        val addedUserChatRoom:APIResponse<Int> = try{
+            var isAdded = roomDAO.addUserToChatRoom(chatRoomId,usersId)
+            if(isAdded){
+                APIResponse("200","20","Added user to the chat room with success",listOf())
+            }else{
+                APIResponse("204","20","Failed to add users to chat room",listOf())
+            }
+
+        }catch (se:SQLException){
+            APIResponse("500","20","Couldn't add user to chat room because of SE error", listOf())
+        }
+        return addedUserChatRoom
     }
 
     /**

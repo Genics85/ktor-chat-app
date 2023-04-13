@@ -5,6 +5,7 @@ import com.database.DirectMessageDb
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.time.LocalDateTime
 
 class DirectMessageDAOImpl : DirectMessageDAO {
     /**
@@ -15,8 +16,18 @@ class DirectMessageDAOImpl : DirectMessageDAO {
         senderId = row[DirectMessageDb.senderId],
         recipientId = row[DirectMessageDb.recipientId],
         content = row[DirectMessageDb.content],
-        timeSent = row[DirectMessageDb.timeSent]
+        timeSent = LocalDateTime.parse(row[DirectMessageDb.timeSent])
     )
+
+    /**
+     * function to get a single direct message
+     * **/
+    override fun getDirectMessage(messageId: String): DirectMessage? = transaction{
+        DirectMessageDb.select(DirectMessageDb.id eq messageId)
+            .map(::rowToDirectMessage)
+            .singleOrNull()
+    }
+
     /**
      * function to create a direct message
      * **/
@@ -26,7 +37,7 @@ class DirectMessageDAOImpl : DirectMessageDAO {
             it[senderId] = message.senderId
             it[recipientId] = message.recipientId
             it[content] = message.content
-            it[timeSent] = message.timeSent
+            it[timeSent] = message.timeSent.toString()
         }.insertedCount
     }
 

@@ -5,27 +5,27 @@ import com.database.ChatRoomDb
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.time.LocalDateTime
 
 class ChatRoomDAOImpl : ChatRoomDAO {
 
     /**
      * function to convert row from db to instance of chatroom model
      * **/
-//    private fun rowToChatRoom(row: ResultRow) = ChatRoom(
-//        id = row[ChatRoomDb.id],
-//        chatInitiator = row[ChatRoomDb.chatInitiator],
-//        name = row[ChatRoomDb.roomName],
-//        dateCreated = row[ChatRoomDb.dateCreated]
-//        membersIDs = row[ChatRoomDb.membersIDs]
-//    )
+    private fun rowToChatRoom(row: ResultRow) = ChatRoom(
+        id = row[ChatRoomDb.id],
+        chatInitiator = row[ChatRoomDb.chatInitiator],
+        name = row[ChatRoomDb.roomName],
+        dateCreated = LocalDateTime.parse(row[ChatRoomDb.dateCreated]),
+        membersIDs = (row[ChatRoomDb.membersIDs]).split(",").toMutableList()
+    )
     /**
      * function to get chat room details
      * **/
     override fun getChatRoom(id: String): ChatRoom? =transaction{
-        TODO("WILL DO IT AFTER CHANGING MUTABLE LIST TO STRING")
-//        ChatRoomDb.select(ChatRoomDb.id eq id)
-//            .map(::rowToChatRoom)
-//            .singleOrNull()
+        ChatRoomDb.select(ChatRoomDb.id eq id)
+            .map(::rowToChatRoom)
+            .singleOrNull()
     }
 
     /**
@@ -37,7 +37,7 @@ class ChatRoomDAOImpl : ChatRoomDAO {
             it[chatInitiator]=room.chatInitiator
             it[roomName]=room.name
             it[membersIDs]=room.membersIDs.toString()
-            it[dateCreated]=room.dateCreated
+            it[dateCreated]=room.dateCreated.toString()
         }.insertedCount
     }
 
@@ -45,10 +45,9 @@ class ChatRoomDAOImpl : ChatRoomDAO {
      * function to get all chat room in db
      * **/
     override fun getAllChatRooms(): List<ChatRoom> = transaction {
-        TODO("will do it after figuring out the chat room members list thing")
-//        ChatRoomDb.selectAll()
-//            .map(::rowToChatRoom)
-//            .toList()
+        ChatRoomDb.selectAll()
+            .map(::rowToChatRoom)
+            .toList()
     }
 
     /**
@@ -61,15 +60,42 @@ class ChatRoomDAOImpl : ChatRoomDAO {
     /**
      * Remove user from chat room
      * **/
-    override fun deleteUserFromChatRoom(roomId: String, userId: String): Boolean {
-        TODO("Not yet implemented")
+    override fun deleteUserFromChatRoom(roomId: String, userId: List<String>): Boolean = transaction{
+        val room = getChatRoom(roomId)
+        var roomMembers = room?.membersIDs
+        userId.forEach{
+            roomMembers?.remove(it)
+        }
+        ChatRoomDb.update({ChatRoomDb.id eq roomId}){
+            if (roomMembers != null) {
+                it[membersIDs] = roomMembers.joinToString(",")
+            }
+        } > 0
     }
 
     /**
      * Add user to the chat room
      * **/
-    override fun addUserToChatRoom(roomId: String, userId: String): Boolean {
-        TODO("Not yet implemented")
+    override fun addUserToChatRoom(roomId: String, userId: List<String>): Boolean = transaction{
+        val room = getChatRoom(roomId)
+        var roomMembers = room?.membersIDs
+        userId.forEach{
+            roomMembers?.add(it)
+        }
+        ChatRoomDb.update({ChatRoomDb.id eq roomId}){
+            if (roomMembers != null) {
+                it[membersIDs]=roomMembers.joinToString(",")
+            }
+        } > 0
+    }
+
+    /**
+     * function to update the users in a group remove/add
+     * **/
+    override fun updateUsers(roomId: String, members: String): Boolean = transaction{
+        ChatRoomDb.update({ChatRoomDb.id eq roomId}){
+            it[membersIDs] = members
+        } > 0
     }
 
     /**

@@ -20,7 +20,7 @@ interface DirectMessageController {
     /**
      * create direct message
      * **/
-    fun createDirectMessage(message:DirectMessage):APIResponse<DirectMessage>
+    fun createDirectMessage(message:DirectMessage): APIResponse<Int>
     /**
      * Function to delete direct message
      **/

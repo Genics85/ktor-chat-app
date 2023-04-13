@@ -5,6 +5,7 @@ import com.database.UserDb
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.time.LocalDateTime
 
 class UserDAOImpl : UserDAO {
     /**
@@ -15,8 +16,8 @@ class UserDAOImpl : UserDAO {
         firstName = row[UserDb.firstName],
         lastName = row[UserDb.lastName],
         userName = row[UserDb.userName],
-        type = row[UserDb.type],
-        dateCreated = row[UserDb.dateCreated]
+        type = enumValueOf(row[UserDb.type]),
+        dateCreated = LocalDateTime.parse( row[UserDb.dateCreated])
     )
     /**
      * function to create a new user
@@ -27,8 +28,8 @@ class UserDAOImpl : UserDAO {
             it[firstName] = user.firstName
             it[lastName] = user.lastName
             it[userName] = user.userName
-            it[type] = user.type
-            it[dateCreated] = user.type
+            it[type] = user.type.toString()
+            it[dateCreated] = user.dateCreated.toString()
         }.insertedCount
     }
 
