@@ -11,3 +11,9 @@ data class ChatRoom(
     var name:String,
     val dateCreated:LocalDateTime
 )
+
+data class ChatRoomDTO(
+    var membersIDs: MutableList<String>,
+    val chatInitiator: String,
+    var name: String
+)

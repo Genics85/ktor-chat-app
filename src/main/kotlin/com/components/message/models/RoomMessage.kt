@@ -9,3 +9,9 @@ data class RoomMessage(
     val content:String,
     val timeSent:LocalDateTime,
 )
+
+data class RoomMessageDTO(
+    val senderId: String,
+    val roomId: String,
+    val content: String
+)

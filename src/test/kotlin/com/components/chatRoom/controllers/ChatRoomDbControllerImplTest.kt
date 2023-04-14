@@ -5,17 +5,17 @@ import com.components.chatRoom.repo.ChatRoomDAO
 import com.components.message.models.RoomMessage
 import com.components.message.repo.RoomMessageDAO
 import io.mockk.every
+import io.mockk.mockk
+import io.mockk.unmockkAll
+import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import uk.co.jemos.podam.api.PodamFactoryImpl
-import io.mockk.mockk
-import io.mockk.unmockkAll
-import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import java.sql.SQLException
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -227,7 +227,7 @@ internal class ChatRoomControllerImplTest {
         //WHEN
         val expected = underTest.addUserToChatRoom(room.id, listOf("sdkfjskdjf"))
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("204")
     }
 
     @Test

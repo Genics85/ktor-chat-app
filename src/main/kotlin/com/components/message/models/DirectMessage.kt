@@ -9,3 +9,9 @@ data class DirectMessage(
     val content:String,
     val timeSent:LocalDateTime,
 )
+
+data class DirectMessageDTO(
+    val senderId: String,
+    val recipientId: String,
+    val content: String,
+)
