@@ -161,7 +161,17 @@ class ChatRoomControllerImpl(override val di: DI) : ChatRoomController,DIAware {
      * function to delete user/s from chat room
      * **/
     override fun deleteUsersFromChatRoom(chatRoomId: String, usersId: List<String>): APIResponse<Int> {
-        TODO("Not yet implemented")
+        val deletedUserChatRoom:APIResponse<Int> = try{
+            var isDeleted = roomDAO.deleteUserFromChatRoom(chatRoomId,usersId)
+            if(isDeleted){
+                APIResponse("200","20","Deleted users from the chat room with success",listOf())
+            }else{
+                APIResponse("204","20","Failed to delete users to chat room",listOf())
+            }
+        }catch (se:SQLException){
+            APIResponse("500","20","Couldn't delete users from chat room because of SE error", listOf())
+        }
+        return deletedUserChatRoom
     }
 
     /**

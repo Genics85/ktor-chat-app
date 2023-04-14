@@ -11,7 +11,7 @@ import java.sql.SQLException
 
 class UserControllerImpl( override val di: DI) : UserController, DIAware {
     private val userDAO:UserDAO by di.instance()
-    private val roomDAO:ChatRoomDAO by di.instance()
+    private val roomDAO: ChatRoomDAO by di.instance()
     /**
      * function to create user
      * **/
@@ -92,14 +92,26 @@ class UserControllerImpl( override val di: DI) : UserController, DIAware {
      * function to get the groups a user is part of
      * **/
     override fun getUserChatGroups(userId: String): APIResponse<List<String>> {
-        TODO("will do after figuring out the list to string and list to string thang")
-//        val userGroups:APIResponse<List<String>> = try{
-//            if(userId != null){
-//                var chatRooms = roomDAO.getAllChatRooms()
-//                if(chatRooms.isNotEmpty()){
-//
-//                }
-//            }
-//        }
+        val userGroups:APIResponse<List<String>> = try{
+            val rooms = roomDAO.getAllChatRooms()
+            var userRooms:MutableList<String> = mutableListOf()
+            if(rooms.isNotEmpty()){
+                rooms.forEach {
+                    if(it.membersIDs.contains(userId)){
+                        userRooms.add(it.name)
+                    }
+                }
+                if(userRooms.isNotEmpty()){
+                    APIResponse("201","10","Got all rooms of user",listOf(userRooms))
+                }else{
+                    APIResponse("204","10","User does not belong to any room", listOf())
+                }
+            }else{
+                APIResponse("204","10","No room exist on the database",listOf())
+            }
+        }catch (se:SQLException){
+            APIResponse("500","10","Can't get user chat groups because of SE error",listOf())
+        }
+        return userGroups
     }
 }

@@ -64,13 +64,22 @@ class ChatRoomDAOImpl : ChatRoomDAO {
         val room = getChatRoom(roomId)
         var roomMembers = room?.membersIDs
         userId.forEach{
-            roomMembers?.remove(it)
-        }
-        ChatRoomDb.update({ChatRoomDb.id eq roomId}){
             if (roomMembers != null) {
-                it[membersIDs] = roomMembers.joinToString(",")
+                if(roomMembers.contains(it)){
+                    roomMembers.remove(it)
+                }
             }
-        } > 0
+        }
+        if(roomMembers !== null && roomMembers.isNotEmpty()){
+            ChatRoomDb.update({ChatRoomDb.id eq roomId}){
+                if (roomMembers != null ) {
+                    it[membersIDs] = roomMembers.joinToString(",")
+                }
+            } > 0
+        }else{
+            false
+        }
+
     }
 
     /**
@@ -80,13 +89,20 @@ class ChatRoomDAOImpl : ChatRoomDAO {
         val room = getChatRoom(roomId)
         var roomMembers = room?.membersIDs
         userId.forEach{
-            roomMembers?.add(it)
-        }
-        ChatRoomDb.update({ChatRoomDb.id eq roomId}){
-            if (roomMembers != null) {
-                it[membersIDs]=roomMembers.joinToString(",")
+            if (roomMembers !== null) {
+                if(!(roomMembers.contains(it))){
+                    roomMembers.add(it)
+                }
             }
-        } > 0
+        }
+        if(roomMembers !== null && roomMembers.isNotEmpty()){
+            ChatRoomDb.update({ChatRoomDb.id eq roomId}){
+                it[membersIDs]=roomMembers.joinToString(",")
+            } > 0
+        }else{
+            false
+        }
+
     }
 
     /**

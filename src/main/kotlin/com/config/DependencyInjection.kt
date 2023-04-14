@@ -1,6 +1,7 @@
 package com.config
 
 import com.components.chatRoom.controllers.ChatRoomControllerImpl
+import com.components.chatRoom.repo.ChatRoomDAO
 import com.components.chatRoom.repo.ChatRoomDAOImpl
 import com.components.message.controllers.DirectMessageControllerImpl
 import com.components.message.controllers.RoomMessageControllerImpl
@@ -16,7 +17,7 @@ import org.kodein.di.bindSingleton
 fun Application.configureDI() {
     DI{
         bindSingleton<UserDAO> { UserDAOImpl()}
-        bindSingleton { ChatRoomDAOImpl()}
+        bindSingleton<ChatRoomDAO> { ChatRoomDAOImpl()}
         bindSingleton { DirectMessageDAOImpl()}
         bindSingleton { RoomMessageDAOImpl()}
         bindSingleton { UserControllerImpl(di) }

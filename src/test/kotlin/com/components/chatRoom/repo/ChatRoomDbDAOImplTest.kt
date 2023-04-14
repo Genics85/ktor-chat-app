@@ -7,10 +7,9 @@ import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import uk.co.jemos.podam.api.PodamFactoryImpl
 
@@ -41,7 +40,7 @@ internal class ChatRoomDAOImplTest {
     @Test
     fun getChatRoom() {
         //GIVEN
-        val room=rooms.first()
+        val room=underTest.getAllChatRooms().first()
         //WHEN
         val expected = underTest.getChatRoom(room.id)
         //THEN
@@ -91,19 +90,19 @@ internal class ChatRoomDAOImplTest {
     @Test
     fun deleteUserFromChatRoom() {
         //GIVEN
-        val room=rooms.first()
+        val room=underTest.getAllChatRooms().first()
         //WHEN
-        val expected = underTest.deleteUserFromChatRoom(room.id,room.membersIDs.first())
+        val expected = underTest.deleteUserFromChatRoom(room.id,listOf(room.membersIDs[2],room.membersIDs[4],room.membersIDs[3]))
         //THEN
         assertThat(expected).isTrue
     }
 
     @Test
-    fun `can not delete user from chat room because user is not part `(){
+    fun `can not delete user from chat room because user is not part of group`(){
         //GIVEN
         val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
         //WHEN
-        val expected = underTest.deleteUserFromChatRoom(room.id,room.membersIDs.first())
+        val expected = underTest.deleteUserFromChatRoom(room.id,room.membersIDs)
         //THEN
         assertThat(expected).isFalse
     }
@@ -111,23 +110,13 @@ internal class ChatRoomDAOImplTest {
     @Test
     fun addUserToChatRoom() {
         //GIVEN
-        val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        val userIds = factory.manufacturePojoWithFullData(List::class.java,String::class.java) as List<String>
+        val room=underTest.getAllChatRooms().first()
         //WHEN
-        val expected = underTest.addUserToChatRoom(room.id,"dksjdkfsld")
+        val expected = underTest.addUserToChatRoom(room.id,userIds)
         //THEN
         assertThat(expected).isTrue
     }
-
-    @Test
-    fun `can not att user to chat room because it is already part`(){
-        //GIVEN
-        val room=rooms.first()
-        //WHEN
-        val expected = underTest.addUserToChatRoom(room.id,room.membersIDs.first())
-        //THEN
-        assertThat(expected).isFalse
-    }
-
     @Test
     fun changeChatRoomName() {
         //GIVEN

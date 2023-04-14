@@ -9,10 +9,9 @@ import io.mockk.mockk
 import io.mockk.unmockkAll
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
@@ -33,6 +32,7 @@ internal class UserDbControllerImplTest {
         roomService=mockk(relaxed = true)
         di=DI{
             bindSingleton { service }
+            bindSingleton {roomService}
         }
         underTest= UserControllerImpl(di)
     }
@@ -103,7 +103,7 @@ internal class UserDbControllerImplTest {
         val user=factory.manufacturePojoWithFullData(User::class.java)
         user.lastName="Abrante3"
         user.firstName="Genics"
-        every{service.updateUserInfo(user)} returns 2
+        every{service.updateUserInfo(any())} returns 1
         //WHEN
         val expected = underTest.updateUserDetails(user.id,user.firstName,null,user.lastName)
         //THEN
@@ -116,7 +116,7 @@ internal class UserDbControllerImplTest {
         val user=factory.manufacturePojoWithFullData(User::class.java)
         user.lastName="Abrante3"
         user.firstName="Genics"
-        every { service.updateUserInfo(user) } returns 0
+        every { service.updateUserInfo(any()) } returns 0
         //WHEN
         val expected = underTest.updateUserDetails(user.id,user.firstName,user.lastName,null)
         //THEN
@@ -128,7 +128,7 @@ internal class UserDbControllerImplTest {
         val user=factory.manufacturePojoWithFullData(User::class.java)
         user.lastName="David"
         user.firstName="Genics"
-        every { service.updateUserInfo(user) } throws SQLException()
+        every { service.updateUserInfo(any()) } throws SQLException()
         //WHEN
         val expected = underTest.updateUserDetails(user.id,user.firstName,user.lastName,user.userName)
         //THEN
@@ -138,11 +138,10 @@ internal class UserDbControllerImplTest {
     @Test
     fun getUserChatGroups() {
         //GIVEN
-        val userId=factory.manufacturePojoWithFullData(String::class.java)
         val rooms=factory.manufacturePojoWithFullData(List::class.java,ChatRoom::class.java) as List<ChatRoom>
         every { roomService.getAllChatRooms() } returns rooms
         //WHEN
-        val expected = underTest.getUserChatGroups(userId)
+        val expected = underTest.getUserChatGroups(rooms.first().membersIDs.first())
         //THEN
         assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isGreaterThan(0)
@@ -152,11 +151,12 @@ internal class UserDbControllerImplTest {
     fun `can not get any group because user is not part of any group`(){
         //GIVEN
         val userId=factory.manufacturePojoWithFullData(String::class.java)
-        every { roomService.getAllChatRooms() } returns listOf()
+        val rooms=factory.manufacturePojoWithFullData(List::class.java,ChatRoom::class.java) as List<ChatRoom>
+        every { roomService.getAllChatRooms() } returns rooms
         //WHEN
         val expected = underTest.getUserChatGroups(userId)
         //THEN
-        assertThat(expected.code).isEqualTo("200")
+        assertThat(expected.code).isEqualTo("204")
         assertThat(expected.data.size).isZero
     }
 
