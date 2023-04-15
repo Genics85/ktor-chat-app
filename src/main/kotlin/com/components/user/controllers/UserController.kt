@@ -20,4 +20,12 @@ interface UserController {
      * function to get the groups a user is part of
      * **/
     fun getUserChatGroups(userId:String):APIResponse<List<String>>
+    /**
+     * function to get a user by id
+     * **/
+    fun getAUser(userId:String):APIResponse<User>
+    /**
+     * function to get all users on the platform
+     * **/
+    fun getAllUsers():APIResponse<List<User>>
 }

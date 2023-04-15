@@ -114,4 +114,39 @@ class UserControllerImpl( override val di: DI) : UserController, DIAware {
         }
         return userGroups
     }
+
+    /**
+     * function to get a user by id
+     * **/
+    override fun getAUser(userId: String): APIResponse<User> {
+        val gotUser:APIResponse<User> = try{
+            val user=userDAO.getAUser(userId)
+            if(user !== null){
+                APIResponse("201","10","Retrieved user with success",listOf(user))
+            }else{
+                APIResponse("204","10","user does not exist",listOf())
+            }
+        }catch(se:SQLException){
+            APIResponse("500","10","Couldn't get a user because of SE error",listOf())
+        }
+        return gotUser
+    }
+
+    /**
+     * function to get all users on the platform
+     * **/
+    override fun getAllUsers(): APIResponse<List<User>> {
+        val allUser:APIResponse<List<User>> = try{
+            val all:List<User> = userDAO.getAllUsers()
+            if( all.isNotEmpty()){
+                APIResponse("201","10","Got all users with success",listOf(all))
+            }else{
+                APIResponse("204","10","There is no user in the database",listOf())
+            }
+        }catch(se:SQLException){
+            APIResponse("500","10","Failed to get all users because of SE error", listOf())
+        }
+        return allUser
+    }
+
 }
