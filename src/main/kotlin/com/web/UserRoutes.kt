@@ -1,9 +1,11 @@
 package com.config.plugins
 
 import com.components.user.controllers.UserControllerImpl
+import com.components.user.models.User
 import com.components.user.models.UserDTO
 import com.components.user.models.UserMapper
 import com.components.user.repo.UserDAOImpl
+import com.config.APIResponse
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -26,31 +28,43 @@ fun Application.UserRouting(){
         route(BASE_URL){
             get("get/all"){
                 val response = userController.getAllUsers()
-                val allUsers =response.data
-                if(allUsers.isNotEmpty()){
-                    call.respond(HttpStatusCode.Found,allUsers)
-                }else{
-                    call.respond(HttpStatusCode.NotFound,"Users database is empty")
-                }
+                call.respond(response)
             }
             get("get/{id}"){
                 val userId = call.parameters["id"]
-                val user = userId?.let { it1 -> userController.getAUser(it1) }
-                if(user !==null){
-                    call.respond(HttpStatusCode.Found,user)
+
+                if(userId !== null){
+                    val response = userController.getAUser(userId)
+                    call.respond(response)
                 }else{
-                    call.respond(HttpStatusCode.NotFound,"User ID not provided in param")
+                    call.respond(HttpStatusCode.NotAcceptable,APIResponse<String>("400","10","You have to provide a user id as a parameter to get a user",listOf()))
                 }
+
             }
             post("/add"){
                 val userInfo:UserDTO = call.receive()
                 val user = UserMapper.toModel(userInfo)
                 val response = userController.createUser(user)
-                if(response.code =="200"){
-                    call.respond(HttpStatusCode.Created,"User created with success")
-                }else if(response.code == "204"){
-                    call.respond(HttpStatusCode.NotAcceptable,"User could not be created")
-                }
+                call.respond(response)
+            }
+            post("/update"){
+                val userInfo = call.receive<User>()
+                val response = userController.updateUserDetails(userInfo.id,userInfo.firstName,userInfo.lastName,userInfo.userName)
+                call.respond(response)
+            }
+            delete("/delete"){
+                val userId = call.receive<String>()
+                val response = userController.deleteUser(userId)
+                call.respond(response)
+            }
+            delete("/get-user-chatrooms/{id}"){
+                val userId = call.parameters["id"]
+                if(userId !== null){
+                    val response = userController.getUserChatGroups(userId)
+                    call.respond(response)
+                }else(
+                        call.respond(HttpStatusCode.NotAcceptable,APIResponse<String>("400","10","You have to add a string id to the url to fetch the chat rooms of a user",listOf()))
+                )
             }
         }
     }
