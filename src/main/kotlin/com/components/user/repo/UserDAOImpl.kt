@@ -1,6 +1,8 @@
 package com.components.user.repo
 
 import com.components.user.models.User
+import com.components.user.models.UserDTO
+import com.components.user.models.UserMapper
 import com.database.UserDb
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -22,7 +24,8 @@ class UserDAOImpl : UserDAO {
     /**
      * function to create a new user
      * **/
-    override fun createUser(user: User): Int = transaction{
+    override fun createUser(userDTO: UserDTO): Int = transaction{
+        val user = UserMapper.toModel(userDTO)
         UserDb.insert {
             it[id] = user.id
             it[firstName] = user.firstName

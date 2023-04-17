@@ -1,6 +1,7 @@
 package com.components.chatRoom.controllers
 
 import com.components.chatRoom.models.ChatRoom
+import com.components.chatRoom.models.ChatRoomDTO
 import com.components.message.models.RoomMessage
 import com.config.APIResponse
 
@@ -8,7 +9,7 @@ interface ChatRoomController {
     /**
      * function to create a chat room
      * **/
-    fun createChatRoom(chatRoom:ChatRoom):APIResponse<ChatRoom>
+    fun createChatRoom(chatRoom: ChatRoomDTO):APIResponse<Int>
     /**
      * function to get a chat room
      * **/

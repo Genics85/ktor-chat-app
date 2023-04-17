@@ -2,6 +2,7 @@ package com.components.user.controllers
 
 import com.components.chatRoom.repo.ChatRoomDAO
 import com.components.user.models.User
+import com.components.user.models.UserDTO
 import com.components.user.repo.UserDAO
 import com.config.APIResponse
 import org.kodein.di.DI
@@ -15,8 +16,8 @@ class UserControllerImpl( override val di: DI) : UserController, DIAware {
     /**
      * function to create user
      * **/
-    override fun createUser(user: User): APIResponse<User> {
-        val createdUser:APIResponse<User> = try{
+    override fun createUser(user: UserDTO): APIResponse<UserDTO> {
+        val createdUser:APIResponse<UserDTO> = try{
             if(user != null){
                 var result = userDAO.createUser(user)
                 if(result > 0){

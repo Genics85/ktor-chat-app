@@ -1,13 +1,14 @@
 package com.components.user.controllers
 
 import com.components.user.models.User
+import com.components.user.models.UserDTO
 import com.config.APIResponse
 
 interface UserController {
     /**
      * function to create user
      * **/
-    fun createUser(user: User):APIResponse<User>
+    fun createUser(user: UserDTO):APIResponse<UserDTO>
     /**
      * function to delete a user
      * **/

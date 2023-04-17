@@ -11,7 +11,7 @@ enum class UserType{
 }
 @Serializable
 data class User(
-    val id:String,
+    val id:String? = UUID.randomUUID().toString(),
     var firstName:String,
     var lastName:String,
     var userName:String,
@@ -32,11 +32,9 @@ data class UserDTO(
 object UserMapper {
     fun toModel(userDTO:UserDTO):User{
         return User(
-            id = UUID.randomUUID().toString(),
             firstName = userDTO.firstName,
             lastName = userDTO.lastName,
             userName = userDTO.userName,
-            dateCreated = LocalDateTime.now()
         )
     }
 

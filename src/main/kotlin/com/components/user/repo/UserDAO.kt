@@ -6,7 +6,7 @@ interface UserDAO {
     /**
      * function to create a new user
      * **/
-    fun createUser(user:User):Int
+    fun createUser(user:UserDTO):Int
     /**
      * function to delete a user
      * **/

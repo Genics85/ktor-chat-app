@@ -1,6 +1,7 @@
 package com.components.chatRoom.repo
 
 import com.components.chatRoom.models.ChatRoom
+import com.components.chatRoom.models.ChatRoomDTO
 
 interface ChatRoomDAO {
     /**
@@ -10,7 +11,7 @@ interface ChatRoomDAO {
     /**
      * function to create new chatroom
      * **/
-    fun createChatRoom(room: ChatRoom): Int
+    fun createChatRoom(room: ChatRoomDTO): Int
     /**
      * function to get all chat room in db
      * **/

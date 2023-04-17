@@ -1,6 +1,7 @@
 package com.components.chatRoom.controllers
 
 import com.components.chatRoom.models.ChatRoom
+import com.components.chatRoom.models.ChatRoomDTO
 import com.components.chatRoom.repo.ChatRoomDAO
 import com.components.message.models.RoomMessage
 import com.components.message.repo.RoomMessageDAO
@@ -16,8 +17,8 @@ class ChatRoomControllerImpl(override val di: DI) : ChatRoomController,DIAware {
     /**
      * function to create a chat room
      * **/
-    override fun createChatRoom(chatRoom: ChatRoom): APIResponse<ChatRoom> {
-        var createdRoom:APIResponse<ChatRoom> = try{
+    override fun createChatRoom(chatRoom: ChatRoomDTO): APIResponse<Int> {
+        var createdRoom:APIResponse<Int> = try{
             if(chatRoom !=null){
                 val result = roomDAO.createChatRoom(chatRoom)
                 if(result>0){

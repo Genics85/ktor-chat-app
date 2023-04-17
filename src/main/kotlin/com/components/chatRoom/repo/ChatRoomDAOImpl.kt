@@ -1,6 +1,8 @@
 package com.components.chatRoom.repo
 
 import com.components.chatRoom.models.ChatRoom
+import com.components.chatRoom.models.ChatRoomDTO
+import com.components.chatRoom.models.RoomMapper
 import com.database.ChatRoomDb
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -31,7 +33,8 @@ class ChatRoomDAOImpl : ChatRoomDAO {
     /**
      * function to create new chatroom
      * **/
-    override fun createChatRoom(room: ChatRoom): Int = transaction{
+    override fun createChatRoom(roomDTO: ChatRoomDTO): Int = transaction{
+        val room = RoomMapper.toModel(roomDTO)
         ChatRoomDb.insert {
             it[id]=room.id
             it[chatInitiator]=room.chatInitiator
