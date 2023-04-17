@@ -43,6 +43,24 @@ fun Routing.chatRoomRoutes(){
         post("/add"){
             val room = call.receive<ChatRoomDTO>()
             val response = roomInst.createChatRoom(room)
+            call.respond(response)
         }
+        post("/members"){
+            val roomId= call.parameters["id"] ?: throw BadRequestException("Parameter for room can not be empty")
+            val response = roomInst.getMembersOfChatRoom(roomId)
+            call.respond(response)
+        }
+        post("/add-user/{id}"){
+            val roomId = call.parameters["id"] ?: throw BadRequestException("Parameter for room id can not be null")
+            val userList = call.receive<String>()
+            val response = roomInst.addUserToChatRoom(roomId,userList.split(",").toMutableList())
+            call.respond(response)
+        }
+        delete("delete/{id}"){
+            val roomId = call.parameters["id"] ?: throw BadRequestException("parameter for room id cant be null")
+            val response =roomInst.deleteChatRoom(roomId)
+            call.respond(response)
+        }
+
     }
 }
