@@ -1,6 +1,7 @@
 package com.components.message.controllers
 
 import com.components.message.models.DirectMessage
+import com.components.message.models.DirectMessageDTO
 import com.config.APIResponse
 
 interface DirectMessageController {
@@ -20,7 +21,7 @@ interface DirectMessageController {
     /**
      * create direct message
      * **/
-    fun createDirectMessage(message:DirectMessage): APIResponse<Int>
+    fun createDirectMessage(message: DirectMessageDTO): APIResponse<Int>
     /**
      * Function to delete direct message
      **/

@@ -1,6 +1,7 @@
 package com.components.message.repo
 
 import com.components.message.models.DirectMessage
+import com.components.message.models.DirectMessageDTO
 
 interface DirectMessageDAO {
     /**
@@ -10,7 +11,7 @@ interface DirectMessageDAO {
     /**
      * function to create a direct message
      * **/
-    fun createDirectMessage(message:DirectMessage): Int
+    fun createDirectMessage(message: DirectMessageDTO): Int
     /**
      * function to delete direct message
      * **/

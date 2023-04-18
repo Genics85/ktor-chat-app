@@ -11,7 +11,7 @@ enum class UserType{
 }
 @Serializable
 data class User(
-    val id:String? = UUID.randomUUID().toString(),
+    val id:String = UUID.randomUUID().toString(),
     var firstName:String,
     var lastName:String,
     var userName:String,

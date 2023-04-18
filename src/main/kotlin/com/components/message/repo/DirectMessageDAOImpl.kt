@@ -1,6 +1,8 @@
 package com.components.message.repo
 
 import com.components.message.models.DirectMessage
+import com.components.message.models.DirectMessageDTO
+import com.components.message.models.DirectMessageMapper
 import com.database.DirectMessageDb
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -31,7 +33,8 @@ class DirectMessageDAOImpl : DirectMessageDAO {
     /**
      * function to create a direct message
      * **/
-    override fun createDirectMessage(message: DirectMessage): Int = transaction{
+    override fun createDirectMessage(messageDto: DirectMessageDTO): Int = transaction{
+        val message = DirectMessageMapper.toModel(messageDto)
         DirectMessageDb.insert{
             it[id] = message.id
             it[senderId] = message.senderId

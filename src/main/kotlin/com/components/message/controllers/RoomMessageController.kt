@@ -7,7 +7,7 @@ interface RoomMessageController {
     /**
      * function to get all chat room messages
      * **/
-    fun getRooMessages():APIResponse<List<RoomMessage>>
+    fun getRooMessages(roomId:String):APIResponse<List<RoomMessage>>
     /**
      * function to delete a chat room message
      * **/

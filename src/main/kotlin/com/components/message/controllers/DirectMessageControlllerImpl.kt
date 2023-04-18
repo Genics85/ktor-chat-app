@@ -1,6 +1,7 @@
 package com.components.message.controllers
 
 import com.components.message.models.DirectMessage
+import com.components.message.models.DirectMessageDTO
 import com.components.message.repo.DirectMessageDAO
 import com.config.APIResponse
 import org.kodein.di.DI
@@ -80,7 +81,7 @@ class DirectMessageControllerImpl(override val di: DI) : DirectMessageController
     /**
      * create direct message
      * **/
-    override fun createDirectMessage(message: DirectMessage): APIResponse<Int> {
+    override fun createDirectMessage(message: DirectMessageDTO): APIResponse<Int> {
         val createdMessage:APIResponse<Int> = try{
             if(message != null){
                 val isCreated= messageDAO.createDirectMessage(message)

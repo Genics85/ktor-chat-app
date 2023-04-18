@@ -13,9 +13,9 @@ class RoomMessageControllerImpl(override val di: DI) : RoomMessageController, DI
     /**
      * function to get all chat room messages
      * **/
-    override fun getRooMessages(): APIResponse<List<RoomMessage>> {
+    override fun getRooMessages(roomId:String): APIResponse<List<RoomMessage>> {
         val roomMessages:APIResponse<List<RoomMessage>> = try{
-            val roomMessages = roomMessageDao.getAllRoomMessages()
+            val roomMessages = roomMessageDao.getRoomMessages(roomId)
             if(roomMessages.isNotEmpty()){
                 APIResponse("201","40","Retrieved all room messages with success",listOf(roomMessages))
             }else{
