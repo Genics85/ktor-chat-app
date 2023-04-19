@@ -3,6 +3,7 @@ package com.components.user.controllers
 import com.components.chatRoom.models.ChatRoom
 import com.components.chatRoom.repo.ChatRoomDAO
 import com.components.user.models.User
+import com.components.user.models.UserDTO
 import com.components.user.repo.UserDAO
 import io.mockk.every
 import io.mockk.mockk
@@ -45,7 +46,7 @@ internal class UserDbControllerImplTest {
     @Test
     fun createUser() {
         //GIVEN
-        val user = factory.manufacturePojoWithFullData(User::class.java)
+        val user = factory.manufacturePojoWithFullData(UserDTO::class.java)
         every { service.createUser(any())} returns 1
         //WHEN
         val expected = underTest.createUser(user)
@@ -56,7 +57,7 @@ internal class UserDbControllerImplTest {
     @Test
     fun `couldn't create user because of SE error`(){
         //GIVEN
-        val user = factory.manufacturePojoWithFullData(User::class.java)
+        val user = factory.manufacturePojoWithFullData(UserDTO::class.java)
         every { service.createUser(any())} throws SQLException()
         //WHEN
         val expected = underTest.createUser(user)

@@ -1,6 +1,7 @@
 package com.components.message.controllers
 
 import com.components.message.models.RoomMessage
+import com.components.message.models.RoomMessageDTO
 import com.config.APIResponse
 
 interface RoomMessageController {
@@ -15,7 +16,7 @@ interface RoomMessageController {
     /**
      * function to create room message
      * **/
-    fun createRoomMessage(message:RoomMessage): APIResponse<Int>
+    fun createRoomMessage(message: RoomMessageDTO): APIResponse<Int>
     /**
      * function to get specific message in a chat room
      * **/

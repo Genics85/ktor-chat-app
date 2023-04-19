@@ -1,6 +1,7 @@
 package com.components.message.controllers
 
 import com.components.message.models.RoomMessage
+import com.components.message.models.RoomMessageDTO
 import com.components.message.repo.RoomMessageDAO
 import com.config.APIResponse
 import org.kodein.di.DI
@@ -47,7 +48,7 @@ class RoomMessageControllerImpl(override val di: DI) : RoomMessageController, DI
     /**
      * function to create room message
      * **/
-    override fun createRoomMessage(message: RoomMessage): APIResponse<Int> {
+    override fun createRoomMessage(message: RoomMessageDTO): APIResponse<Int> {
         val createdMessage:APIResponse<Int> = try{
             val createdCount = roomMessageDao.createRoomMessage(message)
             if(createdCount > 0){

@@ -1,6 +1,7 @@
 package com.components.user.repo
 
 import com.components.user.models.User
+import com.components.user.models.UserDTO
 import com.config.DatabaseFactory
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -18,14 +19,14 @@ internal class UserDbDAOImplTest {
 
     private lateinit var underTest:UserDAOImpl
     private val factory:PodamFactoryImpl= PodamFactoryImpl()
-    private lateinit var users:List<User>
+    private lateinit var users:List<UserDTO>
 //    private var log=LoggerFactory.getLogger(this::class.java)
 
     @BeforeAll
     fun setup(){
         DatabaseFactory.connect()
         underTest=UserDAOImpl()
-        users= factory.manufacturePojoWithFullData(List::class.java,User::class.java) as List<User>
+        users= factory.manufacturePojoWithFullData(List::class.java,UserDTO::class.java) as List<UserDTO>
         users.forEach{
             underTest.createUser(it)
         }
@@ -40,7 +41,7 @@ internal class UserDbDAOImplTest {
     @Test
     fun createUser() {
         //GIVEN
-        val user=factory.manufacturePojoWithFullData(User::class.java)
+        val user=factory.manufacturePojoWithFullData(UserDTO::class.java)
         //WHEN
         val expected =underTest.createUser(user)
         //THEN

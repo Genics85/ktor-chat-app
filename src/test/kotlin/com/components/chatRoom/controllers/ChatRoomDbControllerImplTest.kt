@@ -1,6 +1,7 @@
 package com.components.chatRoom.controllers
 
 import com.components.chatRoom.models.ChatRoom
+import com.components.chatRoom.models.ChatRoomDTO
 import com.components.chatRoom.repo.ChatRoomDAO
 import com.components.message.models.RoomMessage
 import com.components.message.repo.RoomMessageDAO
@@ -47,7 +48,7 @@ internal class ChatRoomControllerImplTest {
     @Test
     fun createChatRoom() {
         //GIVEN
-        val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        val room=factory.manufacturePojoWithFullData(ChatRoomDTO::class.java)
         every{roomService.createChatRoom(any())} returns 1
         //WHEN
         val expected=underTest.createChatRoom(room)
@@ -58,7 +59,7 @@ internal class ChatRoomControllerImplTest {
     @Test
     fun `create chat room not successful for sql exception`(){
         //GIVEN
-        val room = factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        val room = factory.manufacturePojoWithFullData(ChatRoomDTO::class.java)
         every{roomService.createChatRoom(any())} throws SQLException()
         //WHEN
         val expected = underTest.createChatRoom(room)
@@ -70,7 +71,7 @@ internal class ChatRoomControllerImplTest {
     @Test
     fun ` failed to create chat room`(){
         //GIVEN
-        val room=factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        val room=factory.manufacturePojoWithFullData(ChatRoomDTO::class.java)
         every { roomService.createChatRoom(any()) } returns 0
         //WHEN
         val expected=underTest.createChatRoom(room)

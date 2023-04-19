@@ -20,7 +20,7 @@ data class ChatRoomDTO(
     var name: String
 )
 
-object RoomMapper{
+object ChatRoomMapper{
     fun toModel(roomDTO: ChatRoomDTO):ChatRoom{
         return ChatRoom(
             membersIDs = roomDTO.membersIDs,

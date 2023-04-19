@@ -1,6 +1,7 @@
 package com.components.message.controllers
 
 import com.components.message.models.DirectMessage
+import com.components.message.models.DirectMessageDTO
 import com.components.message.repo.DirectMessageDAO
 import io.mockk.every
 import io.mockk.mockk
@@ -49,7 +50,6 @@ internal class DirectMessageDbControllerImplTest {
     @Test
     fun `Didn't get any direct message because direct message is not found`(){
         //GIVEN
-        val messageId=factory.manufacturePojoWithFullData(String::class.java)
         every{service.getAllDirectMessages()} returns listOf()
         //WHEN
         val expected =underTest.getAllDirectMessages()
@@ -143,7 +143,7 @@ internal class DirectMessageDbControllerImplTest {
     @Test
     fun createDirectMessage() {
         //GIVEN
-        val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        val message=factory.manufacturePojoWithFullData(DirectMessageDTO::class.java)
         every{service.createDirectMessage(any())} returns 1
         //WHEN
         val expected = underTest.createDirectMessage(message)
@@ -154,7 +154,7 @@ internal class DirectMessageDbControllerImplTest {
     @Test
     fun `failed to create direct message`(){
         //GIVEN
-        val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        val message=factory.manufacturePojoWithFullData(DirectMessageDTO::class.java)
         every { service.createDirectMessage(any()) } returns 0
         //WHEN
         val expected=underTest.createDirectMessage(message)
@@ -166,7 +166,7 @@ internal class DirectMessageDbControllerImplTest {
     @Test
     fun `failed to create direct message because of SE error`(){
         //GIVEN
-        val message=factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        val message=factory.manufacturePojoWithFullData(DirectMessageDTO::class.java)
         every { service.createDirectMessage(any()) } throws SQLException()
         //WHEN
         val expected = underTest.createDirectMessage(message)

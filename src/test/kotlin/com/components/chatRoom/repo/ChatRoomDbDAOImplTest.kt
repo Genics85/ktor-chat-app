@@ -1,6 +1,7 @@
 package com.components.chatRoom.repo
 
 import com.components.chatRoom.models.ChatRoom
+import com.components.chatRoom.models.ChatRoomDTO
 import com.config.DatabaseFactory
 import com.database.ChatRoomDb
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
@@ -17,14 +18,14 @@ import uk.co.jemos.podam.api.PodamFactoryImpl
 internal class ChatRoomDAOImplTest {
 
     private lateinit var underTest:ChatRoomDAOImpl
-    private lateinit var rooms:List<ChatRoom>
+    private lateinit var rooms:List<ChatRoomDTO>
     private var factory:PodamFactoryImpl= PodamFactoryImpl()
 
     @BeforeAll
     fun setup(){
         DatabaseFactory.connect()
         underTest= ChatRoomDAOImpl()
-        rooms=factory.manufacturePojoWithFullData(List::class.java,ChatRoom::class.java) as List<ChatRoom>
+        rooms=factory.manufacturePojoWithFullData(List::class.java, ChatRoomDTO::class.java) as List<ChatRoomDTO>
         rooms.forEach{
             underTest.createChatRoom(it)
         }
@@ -60,7 +61,7 @@ internal class ChatRoomDAOImplTest {
     @Test
     fun createChatRoom() {
         //GIVEN
-        val room = factory.manufacturePojoWithFullData(ChatRoom::class.java)
+        val room = factory.manufacturePojoWithFullData(ChatRoomDTO::class.java)
         //WHEN
         val expected = underTest.createChatRoom(room)
         //THEN
@@ -70,7 +71,7 @@ internal class ChatRoomDAOImplTest {
     @Test
     fun deleteChatRoom() {
         //GIVEN
-        val room =rooms.first()
+        val room =underTest.getAllChatRooms().first()
         //WHEN
         val expected = underTest.deleteChatRoom(room.id)
         //THEN

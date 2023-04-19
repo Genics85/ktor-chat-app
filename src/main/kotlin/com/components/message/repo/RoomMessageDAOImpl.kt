@@ -1,6 +1,7 @@
 package com.components.message.repo
 
 import com.components.message.models.RoomMessage
+import com.components.message.models.RoomMessageDTO
 import com.database.RoomMessageDb
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -22,7 +23,7 @@ class RoomMessageDAOImpl : RoomMessageDAO {
     /***
      * function to create a room message
      * */
-    override fun createRoomMessage(message: RoomMessage): Int = transaction {
+    override fun createRoomMessage(message: RoomMessageDTO): Int = transaction {
         RoomMessageDb.insert {
             it[id] = message.id
             it[senderId] = message.senderId

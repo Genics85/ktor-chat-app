@@ -1,6 +1,7 @@
 package com.components.message.repo
 
 import com.components.message.models.DirectMessage
+import com.components.message.models.DirectMessageDTO
 import com.config.DatabaseFactory
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -16,14 +17,14 @@ import uk.co.jemos.podam.api.PodamFactoryImpl
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class DirectMessageDbDAOImplTest {
     private lateinit var underTest:DirectMessageDAOImpl
-    private lateinit var messages:List<DirectMessage>
+    private lateinit var messages:List<DirectMessageDTO>
     private var factory:PodamFactoryImpl = PodamFactoryImpl()
 
     @BeforeAll
     fun setup(){
         DatabaseFactory.connect()
         underTest= DirectMessageDAOImpl()
-        messages = factory.manufacturePojoWithFullData(List::class.java,DirectMessage::class.java) as List<DirectMessage>
+        messages = factory.manufacturePojoWithFullData(List::class.java,DirectMessageDTO::class.java) as List<DirectMessageDTO>
         messages.forEach{
             underTest.createDirectMessage(it)
         }
@@ -39,7 +40,7 @@ internal class DirectMessageDbDAOImplTest {
     @Test
     fun createDirectMessage() {
         //GIVEN
-        val message = factory.manufacturePojoWithFullData(DirectMessage::class.java)
+        val message = factory.manufacturePojoWithFullData(DirectMessageDTO::class.java)
         //WHEN
         val expected=underTest.createDirectMessage(message)
         //THEN

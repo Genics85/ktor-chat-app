@@ -7,7 +7,6 @@ import io.mockk.mockk
 import io.mockk.unmockkAll
 import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.junit.jupiter.api.*
-
 import org.kodein.di.DI
 import org.kodein.di.bindSingleton
 import uk.co.jemos.podam.api.PodamFactoryImpl
@@ -38,10 +37,11 @@ internal class RoomMessageDbControllerImplTest {
     @Test
     fun getRooMessages() {
         //GIVEN
-        var messages=factory.manufacturePojoWithFullData(List::class.java,RoomMessage::class.java) as List<RoomMessage>
-        every{service.getAllRoomMessages()} returns messages
+        var roomId = factory.manufacturePojoWithFullData(String::class.java)
+        var messages=factory.manufacturePojoWithFullData(List::class.java, RoomMessage::class.java) as List<RoomMessage>
+        every{service.getRoomMessages(any())} returns messages
         //WHEN
-        val expected=underTest.getRooMessages()
+        val expected=underTest.getRooMessages(roomId)
         //THEN
         assertThat(expected.code).isEqualTo("201")
         assertThat(expected.data.size).isGreaterThan(0)
@@ -51,9 +51,9 @@ internal class RoomMessageDbControllerImplTest {
     fun `can not get room messages because room does not exist`(){
         //GIVEN
         val roomId=factory.manufacturePojoWithFullData(String::class.java)
-        every{service.getAllRoomMessages()} returns emptyList()
+        every{service.getRoomMessages(any())} returns emptyList()
         //WHEN
-        val expected = underTest.getRooMessages()
+        val expected = underTest.getRooMessages(roomId)
         //THEN
         assertThat(expected.code).isEqualTo("204")
         assertThat(expected.data.size).isZero
@@ -63,9 +63,9 @@ internal class RoomMessageDbControllerImplTest {
     fun `can not get room because of SE error`(){
         //GIVEN
         val roomId=factory.manufacturePojoWithFullData(String::class.java)
-        every { service.getAllRoomMessages() } throws SQLException()
+        every { service.getRoomMessages(any()) } throws SQLException()
         //WHEN
-        val expected = underTest.getRooMessages()
+        val expected = underTest.getRooMessages(roomId)
         //THEN
         assertThat(expected.code).isEqualTo("500")
         assertThat(expected.data.size).isZero

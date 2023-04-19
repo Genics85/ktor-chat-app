@@ -1,12 +1,13 @@
 package com.components.message.repo
 
 import com.components.message.models.RoomMessage
+import com.components.message.models.RoomMessageDTO
 
 interface RoomMessageDAO {
     /***
      * function to create a room message
      * */
-    fun createRoomMessage(message:RoomMessage): Int
+    fun createRoomMessage(message: RoomMessageDTO): Int
     /**
      * function to delete room message
      * **/

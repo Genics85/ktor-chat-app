@@ -1,12 +1,13 @@
 package com.components.user.repo
 
 import com.components.user.models.User
+import com.components.user.models.UserDTO
 
 interface UserDAO {
     /**
      * function to create a new user
      * **/
-    fun createUser(user:UserDTO):Int
+    fun createUser(user: UserDTO):Int
     /**
      * function to delete a user
      * **/
